@@ -1,7 +1,1 @@
-Currently nothing more then proof of concept. Obviously needs work.
-
-TODO:
--current scheme for changing directories is basically insane. Switch to using os.chdir()
--add to command pallette / create keybindings
--currently always start at "~/". Would be preferrable to have some way
- for user to specify the "home" directory
+TODO: this
