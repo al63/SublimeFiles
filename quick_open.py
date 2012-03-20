@@ -13,19 +13,19 @@ class QuickOpenCommand(sublime_plugin.WindowCommand):
 
     def change_directory(self):
         self.dir_files = []
+        self.dir_files.append("." + " (" + os.getcwd() + ")")
         self.dir_files.append("..")
         for element in os.listdir(os.getcwd()):
             fullpath = os.path.join(os.getcwd(),element)
             if os.path.isdir(fullpath):
                 self.dir_files.append(element)
-        self.dir_files.append("Reached directory")
         self.window.show_quick_panel(self.dir_files, self.handle_change_directory,  sublime.MONOSPACE_FONT)
 
     def handle_change_directory(self, call_value):
-        if call_value != 1:
-            if self.dir_files[call_value] != "Reached directory":
-                os.chdir(self.dir_files[call_value])
-                self.change_directory()
+        print call_value
+        if call_value != -1 and call_value != 0:
+            os.chdir(self.dir_files[call_value])
+            self.change_directory()
 
     def open_new_file(self):
         self.dir_files = []
