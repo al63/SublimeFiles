@@ -1,6 +1,5 @@
 import sublime, sublime_plugin
-import sys
-import os
+import sys, os
 
 class QuickOpenCommand(sublime_plugin.WindowCommand):
     def run(self, command):
@@ -13,7 +12,7 @@ class QuickOpenCommand(sublime_plugin.WindowCommand):
 
     def change_directory(self):
         self.dir_files = []
-        self.dir_files.append("." + " (" + os.getcwd() + ")")
+        self.dir_files.append(". (" + os.getcwd() + ")")
         self.dir_files.append("..")
         for element in os.listdir(os.getcwd()):
             fullpath = os.path.join(os.getcwd(),element)
@@ -45,7 +44,6 @@ class QuickOpenCommand(sublime_plugin.WindowCommand):
     def handle_set_working_directory(self, new_dir):
         if new_dir[0] == "~":
             new_dir = os.getenv("HOME") + new_dir[1:]
-
         try:
             os.chdir(new_dir)
         except:
