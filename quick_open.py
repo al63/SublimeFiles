@@ -1,7 +1,5 @@
 import sublime, sublime_plugin
 import os
-import glob
-
 
 class QuickOpenCommand(sublime_plugin.WindowCommand):
 
@@ -64,5 +62,3 @@ class QuickOpenCommand(sublime_plugin.WindowCommand):
             os.chdir(new_dir)
         except:
             pass
-
-
