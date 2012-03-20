@@ -6,11 +6,10 @@ import glob
 class QuickOpen(sublime_plugin.WindowCommand):
 
     def run(self):
-        self.determine_command()
-
-
-    def determine_command(self):
         self.options = ["edit", "change directory"]
+        self.show_commands()
+
+    def show_commands(self):
         self.window.show_quick_panel(self.options, self.choose_command, sublime.MONOSPACE_FONT)
 
 
@@ -54,5 +53,4 @@ class QuickOpen(sublime_plugin.WindowCommand):
 
 
     def handle_open_new_file(self, call_value):
-        print self.dir_files[call_value]
         self.window.open_file(self.cur_path + "/" + self.dir_files[call_value])
