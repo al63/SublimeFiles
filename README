@@ -1,0 +1,5 @@
+TODO:
+
+-add to command pallette / create keybindings
+-currently always start at "~/". Would be preferrable to have some way
+ for user to specify the "home" directory
