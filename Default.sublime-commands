@@ -1,3 +1,17 @@
 [
-    {"caption": "QuickOpen: run", "command": "quick_open" }
+    {
+        "caption": "QuickOpen: Open",
+        "command": "quick_open",
+        "args": {"command":"open"}
+    },
+    {
+        "caption": "QuickOpen: Change Directory",
+        "command": "quick_open",
+        "args": {"command":"cd"}
+    },
+    {
+        "caption": "QuickOpen: Set Working Directory",
+        "command": "quick_open",
+        "args": {"command":"setdir"}
+    }
 ]
