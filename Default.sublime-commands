@@ -1,8 +1,8 @@
 [
     {
-        "caption": "QuickOpen: Open",
+        "caption": "QuickOpen: Navigate/Open",
         "command": "quick_open",
-        "args": {"command":"open"}
+        "args": {"command":"navigate"}
     },
     {
         "caption": "QuickOpen: Set Working Directory",

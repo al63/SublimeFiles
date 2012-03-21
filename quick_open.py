@@ -3,7 +3,7 @@ import sys, os
 
 class QuickOpenCommand(sublime_plugin.WindowCommand):
     def run(self, command):
-        if command == "open":
+        if command == "navigate":
             self.open_navigator()
         elif command == "setdir":
             self.set_working_directory()
@@ -14,7 +14,7 @@ class QuickOpenCommand(sublime_plugin.WindowCommand):
         directories = []
         files = []
         self.dir_files = []
-        
+
         self.dir_files.append(". (" + os.getcwd() + ")")
         self.dir_files.append("..")
         for element in os.listdir(os.getcwd()):
