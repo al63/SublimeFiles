@@ -1,5 +1,5 @@
 import sublime, sublime_plugin
-import sys, os
+import sys
 
 class QuickOpenCommand(sublime_plugin.WindowCommand):
     def run(self, command):
@@ -8,12 +8,9 @@ class QuickOpenCommand(sublime_plugin.WindowCommand):
         elif command == "setdir":
             self.set_working_directory()
 
+    #function for showing panel for changing directories / opening files
     def open_navigator(self):
-        dot_files = []
-        dot_directories = []
-        directories = []
-        files = []
-        self.dir_files = []
+        dot_files, dot_directories, directories, files, self.dir_files = [], [], [], [], []
 
         self.dir_files.append(". (" + os.getcwd() + ")")
         self.dir_files.append("..")
@@ -26,13 +23,14 @@ class QuickOpenCommand(sublime_plugin.WindowCommand):
                     directories.append(element+ "/")
             else:
                 if element[0] == ".":
-                    dot_files.append(element + "/")
+                    dot_files.append(element)
                 else:
                     files.append(element)
 
         self.dir_files += files + directories + dot_files + dot_directories
         self.window.show_quick_panel(self.dir_files, self.handle_select_option,  sublime.MONOSPACE_FONT)
 
+    #handles user's selection in open_navigator. Either cd's into new directory, or opens file
     def handle_select_option(self, call_value):
         if call_value != -1 and call_value != 0:
             fullpath = os.path.join(os.getcwd(),self.dir_files[call_value])
@@ -42,9 +40,11 @@ class QuickOpenCommand(sublime_plugin.WindowCommand):
             else:
                 self.window.open_file(os.path.join(os.getcwd(), self.dir_files[call_value]))
 
+    #function for changing the current directory 
     def set_working_directory(self):
         self.window.show_input_panel("Set directory", "", self.handle_set_working_directory, None, None)
 
+    #handles changing the directory based on user input
     def handle_set_working_directory(self, new_dir):
         if new_dir[0] == "~":
             new_dir = os.getenv("HOME") + new_dir[1:]
