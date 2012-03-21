@@ -1,5 +1,7 @@
-import sublime, sublime_plugin
-import sys
+import sublime
+import sublime_plugin
+import os
+
 
 class QuickOpenCommand(sublime_plugin.WindowCommand):
     def run(self, command):
@@ -12,7 +14,7 @@ class QuickOpenCommand(sublime_plugin.WindowCommand):
     def open_navigator(self):
         self.dir_files = [". (" + os.getcwd() + ")", ".."]
         for element in os.listdir(os.getcwd()):
-            fullpath = os.path.join(os.getcwd(),element)
+            fullpath = os.path.join(os.getcwd(), element)
             if os.path.isdir(fullpath):
                 self.dir_files.append(element + "/")
             else:
@@ -23,14 +25,14 @@ class QuickOpenCommand(sublime_plugin.WindowCommand):
     #handles user's selection in open_navigator. Either cd's into new directory, or opens file
     def handle_select_option(self, call_value):
         if call_value != -1 and call_value != 0:
-            fullpath = os.path.join(os.getcwd(),self.dir_files[call_value])
+            fullpath = os.path.join(os.getcwd(), self.dir_files[call_value])
             if os.path.isdir(fullpath):
                 os.chdir(self.dir_files[call_value])
                 self.open_navigator()
             else:
                 self.window.open_file(os.path.join(os.getcwd(), self.dir_files[call_value]))
 
-    #function for changing the current directory 
+    #function for changing the current directory
     def set_working_directory(self):
         self.window.show_input_panel("Set Directory", os.getcwd(), self.handle_set_working_directory, None, None)
 
@@ -39,7 +41,7 @@ class QuickOpenCommand(sublime_plugin.WindowCommand):
         try:
             if new_dir[0] == "~":
                 new_dir = os.getenv("HOME") + new_dir[1:]
-                os.chdir(new_dir)
+            os.chdir(new_dir)
         except:
             sublime.error_message(new_dir + " does not exist")
 
@@ -49,7 +51,7 @@ def sort_files(filename):
         return 0
     if filename == "..":
         return 1
-    
+
     total_weight = 2
     if filename[0] == ".":
         total_weight += 2
