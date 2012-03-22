@@ -1,5 +1,4 @@
-import sublime
-import sublime_plugin
+import sublime, sublime_plugin
 import os, shutil
 
 class SublimeFilesCommand(sublime_plugin.WindowCommand):
@@ -35,13 +34,14 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                     self.open_navigator()
                 else:
                     self.open_file_options(self.dir_files[call_value])
-                    #self.window.open_file(fullpath)
 
+    #Displays potential commands a user can execute on the given file
     def open_file_options(self, filename):
         self.current_file = filename 
         self.file_options = ["Open", "Rename", "Move", "Copy", "Delete", "Back"]
         self.window.show_quick_panel(self.file_options, self.handle_file_option, sublime.MONOSPACE_FONT)
 
+    #Handles chosen command from open_file_options
     def handle_file_option(self, call_value):
         if call_value != -1:
             selection = self.file_options[call_value]
@@ -63,8 +63,13 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 self.old_path = os.path.join(os.getcwd(), self.current_file)
                 self.open_copymove_navigator()
 
+    #Navigator for copy and move commands. Differs from normal navigator in that only shows directories
     def open_copymove_navigator(self):
-        self.dir_files = [". (" + os.getcwd() + ")", ".."]
+        if self.is_copy:
+            self.dir_files = ["Copy to: " + os.getcwd(), ".."]
+        else:
+            self.dir_files = ["Move to: " + os.getcwd(), ".."]
+
         for element in os.listdir(os.getcwd()):
             fullpath = os.path.join(os.getcwd(), element)
             if os.path.isdir(fullpath):
@@ -73,6 +78,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
         self.dir_files.append("~/")
         self.window.show_quick_panel(self.dir_files, self.handle_copymove_navigator_option, sublime.MONOSPACE_FONT)
 
+    #Handles selections from open_copymove_navigator
     def handle_copymove_navigator_option(self, call_value):
         if call_value == 0: #if reached directory to copy or move file to
             if self.is_copy == True:
@@ -89,6 +95,19 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                     os.chdir(self.dir_files[call_value])
             self.open_copymove_navigator()
 
+    #Handles changing the directory based on user input
+    def handle_set_working_directory(self, new_dir):
+        try:
+            if new_dir[0] == "~":
+                new_dir = os.getenv("HOME") + new_dir[1:]
+            os.chdir(new_dir)
+        except:
+            sublime.error_message(new_dir + " does not exist")
+
+    #Helper functions for file operations / setting working directory
+    def set_working_directory(self):
+        self.window.show_input_panel("Set Directory", os.getcwd(), self.handle_set_working_directory, None, None)
+
     def handle_move_file(self, new_name):
         shutil.move(self.old_path, os.path.join(os.getcwd(), new_name))
 
@@ -100,19 +119,6 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             os.rename(self.current_file, new_name)
         except:
             sublime.error_message("Unable to rename file")
-
-    #function for changing the current directory
-    def set_working_directory(self):
-        self.window.show_input_panel("Set Directory", os.getcwd(), self.handle_set_working_directory, None, None)
-
-    #handles changing the directory based on user input
-    def handle_set_working_directory(self, new_dir):
-        try:
-            if new_dir[0] == "~":
-                new_dir = os.getenv("HOME") + new_dir[1:]
-            os.chdir(new_dir)
-        except:
-            sublime.error_message(new_dir + " does not exist")
 
 
 def sort_files(filename):

@@ -1,6 +1,6 @@
 [
     {
-        "caption": "Sublime Files: Navigate/Open",
+        "caption": "Sublime Files: Open Navigator / Change Directory",
         "command": "sublime_files",
         "args": {"command":"navigate"}
     },
