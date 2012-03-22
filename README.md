@@ -21,7 +21,7 @@ the following options:
 Because Sublime Files actually navigates the file system by changing directories,
 the navigator remembers and starts from last visited directory on subsequent uses.
 To open the navigator, you can either just invoke the command pallette command or
-use the keybinding : ctrl+super+n 
+use the keybinding ctrl+super+n 
 
 
 Built with Mac OSX and entirely untested / most likely unreiable for Windows users.
