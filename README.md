@@ -25,3 +25,12 @@ use the keybinding ctrl+super+n
 
 
 Built with Mac OSX and entirely untested / most likely unreiable for Windows users.
+
+------------
+
+__TODO__
+
+
+* Implement commands for moving/renaming directories, not just files
+* Implement easily moving to the directory of the file currently editing
+
