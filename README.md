@@ -1,11 +1,11 @@
 Sublime Files
 =============
 
-__A keyboard driven file management/navigation plugin for Sublime Text 2.__
+__A keyboard driven file management/navigation/opening plugin for Sublime Text 2__
 
 ------------
 
-Sublime Files works entirely through the command pallette. By running the
+Sublime Files works entirely through the command palette. By running the
 Sublime Files Navigator, you can "cd" around directories similar to how
 you would on a command line. On selecting a file, a user is presented with 
 the following options:
