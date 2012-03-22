@@ -1,1 +1,3 @@
-TODO: this
+TODO
+-rename project: broaden scope from just file opening to file navigation/management
+-implement other file operations: cp, mv, rm

@@ -1,12 +1,12 @@
 [
     {
-        "caption": "QuickOpen: Navigate/Open",
-        "command": "quick_open",
+        "caption": "Sublime Files: Navigate/Open",
+        "command": "sublime_files",
         "args": {"command":"navigate"}
     },
     {
-        "caption": "QuickOpen: Set Working Directory",
-        "command": "quick_open",
+        "caption": "Sublime Files: Set Working Directory",
+        "command": "sublime_files",
         "args": {"command":"setdir"}
     }
 ]
