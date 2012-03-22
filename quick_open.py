@@ -2,7 +2,6 @@ import sublime
 import sublime_plugin
 import os
 
-
 class QuickOpenCommand(sublime_plugin.WindowCommand):
     def run(self, command):
         if command == "navigate":
@@ -35,7 +34,7 @@ class QuickOpenCommand(sublime_plugin.WindowCommand):
                     os.chdir(self.dir_files[call_value])
                     self.open_navigator()
                 else:
-                    self.window.open_file(os.path.join(os.getcwd(), self.dir_files[call_value]))
+                    self.window.open_file(fullpath)
 
     #function for changing the current directory
     def set_working_directory(self):
@@ -50,9 +49,8 @@ class QuickOpenCommand(sublime_plugin.WindowCommand):
         except:
             sublime.error_message(new_dir + " does not exist")
 
-
 def sort_files(filename):
-    total_weight = 2
+    total_weight = 0
     if filename[0] == ".":
         total_weight += 2
     if filename[-1] == "/":
