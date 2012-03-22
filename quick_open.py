@@ -18,7 +18,7 @@ class QuickOpenCommand(sublime_plugin.WindowCommand):
                 self.dir_files.append(element + "/")
             else:
                 self.dir_files.append(element)
-        self.dir_files = self.dir_files[:3] + sorted(self.dir_files[3:], key=sort_files)
+        self.dir_files = self.dir_files[:2] + sorted(self.dir_files[2:], key=sort_files)
         self.dir_files.append("~/")
         self.window.show_quick_panel(self.dir_files, self.handle_select_option, sublime.MONOSPACE_FONT)
 
