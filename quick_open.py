@@ -19,18 +19,23 @@ class QuickOpenCommand(sublime_plugin.WindowCommand):
                 self.dir_files.append(element + "/")
             else:
                 self.dir_files.append(element)
-        self.dir_files = sorted(self.dir_files, key=sort_files)
+        self.dir_files = self.dir_files[:3] + sorted(self.dir_files[3:], key=sort_files)
+        self.dir_files.append("~/")
         self.window.show_quick_panel(self.dir_files, self.handle_select_option, sublime.MONOSPACE_FONT)
 
     #handles user's selection in open_navigator. Either cd's into new directory, or opens file
     def handle_select_option(self, call_value):
         if call_value != -1 and call_value != 0:
-            fullpath = os.path.join(os.getcwd(), self.dir_files[call_value])
-            if os.path.isdir(fullpath):
-                os.chdir(self.dir_files[call_value])
+            if self.dir_files[call_value] == "~/":
+                os.chdir(os.getenv("HOME"))
                 self.open_navigator()
             else:
-                self.window.open_file(os.path.join(os.getcwd(), self.dir_files[call_value]))
+                fullpath = os.path.join(os.getcwd(), self.dir_files[call_value])
+                if os.path.isdir(fullpath):
+                    os.chdir(self.dir_files[call_value])
+                    self.open_navigator()
+                else:
+                    self.window.open_file(os.path.join(os.getcwd(), self.dir_files[call_value]))
 
     #function for changing the current directory
     def set_working_directory(self):
@@ -47,11 +52,6 @@ class QuickOpenCommand(sublime_plugin.WindowCommand):
 
 
 def sort_files(filename):
-    if filename[0:3] == ". (":
-        return 0
-    if filename == "..":
-        return 1
-
     total_weight = 2
     if filename[0] == ".":
         total_weight += 2
