@@ -27,6 +27,9 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             if self.dir_files[call_value] == "~/":
                 os.chdir(os.getenv("HOME"))
                 self.open_navigator()
+            elif self.dir_files[call_value] == "..":
+                os.chdir(os.path.pardir)
+                self.open_navigator()
             else:
                 fullpath = os.path.join(os.getcwd(), self.dir_files[call_value])
                 if os.path.isdir(fullpath):
@@ -89,6 +92,8 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
         elif call_value != -1:
             if self.dir_files[call_value] == "~/":
                 os.chdir(os.getenv("HOME"))
+            elif self.dir_files[call_value] == "..":
+                os.chdir(os.path.pardir)
             else:
                 fullpath = os.path.join(os.getcwd(), self.dir_files[call_value])
                 if os.path.isdir(fullpath):

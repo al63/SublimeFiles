@@ -24,7 +24,8 @@ To open the navigator, you can either just invoke the command pallette command o
 use the keybinding ctrl+super+n 
 
 
-Built with Mac OSX. Most likely functional with Linux systems, but no guarantees for Windows. Use at your own risk if not a Mac user.
+Built with Mac OSX, but all the calls have been designed to be platform agnostic and thus should work
+regardless of system. However, this is untested on Windows.
 
 ------------
 
@@ -33,5 +34,3 @@ __TODO__
 
 * Implement commands for moving/renaming directories, not just files
 * Implement easily moving to the directory of the file currently editing
-* Test and Implement Windows/Linux functionality
-
