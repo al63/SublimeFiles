@@ -58,7 +58,8 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             elif selection == "Rename":
                 self.window.show_input_panel("Rename File To: ", self.current_file, self.handle_rename_file, None, None)
             elif selection == "Delete":
-                os.remove(self.current_file)
+                self.to_delete = self.current_file
+                self.window.show_input_panel("Really delete (y/n): ", "", self.handle_delete_file, None, None)
             elif selection == "Copy":
                 self.is_copy = True
                 self.old_path = os.path.join(os.getcwd(), self.current_file)
@@ -122,6 +123,14 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     def handle_copy_file(self, new_name):
         shutil.copy2(self.old_path, os.path.join(os.getcwd(), new_name))
+
+    def handle_delete_file(self, confirmation):
+        if confirmation == "y":
+            try:
+                os.remove(self.to_delete)
+                self.to_delete = None
+            except:
+                sublime.error_message("Unable to delete file")
 
     def handle_rename_file(self, new_name):
         try:
