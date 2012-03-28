@@ -19,6 +19,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 self.dir_files.append(element)
         self.dir_files = self.dir_files[:2] + sorted(self.dir_files[2:], key=sort_files)
         self.dir_files.append("~/")
+        self.dir_files.append("To current view/")
         self.window.show_quick_panel(self.dir_files, self.handle_navigator_option, sublime.MONOSPACE_FONT)
 
     #handles user's selection in open_navigator. Either cd's into new directory, or opens file
@@ -26,17 +27,18 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
         if call_value != -1 and call_value != 0:
             if self.dir_files[call_value] == "~/":
                 os.chdir(os.getenv("HOME"))
-                self.open_navigator()
             elif self.dir_files[call_value] == "..":
                 os.chdir(os.path.pardir)
-                self.open_navigator()
+            elif self.dir_files[call_value] == "To current view/":
+                os.chdir(os.path.dirname(self.window.active_view().file_name()))
             else:
                 fullpath = os.path.join(os.getcwd(), self.dir_files[call_value])
                 if os.path.isdir(fullpath):
                     os.chdir(self.dir_files[call_value])
-                    self.open_navigator()
                 else:
                     self.open_file_options(self.dir_files[call_value])
+                    return
+            self.open_navigator()
 
     #Displays potential commands a user can execute on the given file
     def open_file_options(self, filename):
@@ -79,6 +81,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 self.dir_files.append(element + "/")
         self.dir_files = self.dir_files[:2] + sorted(self.dir_files[2:], key=sort_files)
         self.dir_files.append("~/")
+        self.dir_files.append("To current view/")
         self.window.show_quick_panel(self.dir_files, self.handle_copymove_navigator_option, sublime.MONOSPACE_FONT)
 
     #Handles selections from open_copymove_navigator
@@ -88,12 +91,13 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 self.window.show_input_panel("New Name:", self.current_file, self.handle_copy_file, None, None)
             else:
                 self.window.show_input_panel("New Name:", self.current_file, self.handle_move_file, None, None)
-
         elif call_value != -1:
             if self.dir_files[call_value] == "~/":
                 os.chdir(os.getenv("HOME"))
             elif self.dir_files[call_value] == "..":
                 os.chdir(os.path.pardir)
+            elif self.dir_files[call_value] == "To current view/":
+                os.chdir(os.path.dirname(self.window.active_view().file_name()))
             else:
                 fullpath = os.path.join(os.getcwd(), self.dir_files[call_value])
                 if os.path.isdir(fullpath):
