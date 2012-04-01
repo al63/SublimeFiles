@@ -26,7 +26,10 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
     def handle_navigator_option(self, call_value):
         if call_value != -1 and call_value != 0:
             if self.dir_files[call_value] == "~/":
-                os.chdir(os.getenv("HOME"))
+                if os.name == "nt": #for windows
+                    os.chdir(os.getenv("USERPROFILE"))
+                else:
+                    os.chdir(os.getenv("HOME"))
             elif self.dir_files[call_value] == "..":
                 os.chdir(os.path.pardir)
             elif self.dir_files[call_value] == "To current view/":
@@ -94,7 +97,10 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 self.window.show_input_panel("New Name:", self.current_file, self.handle_move_file, None, None)
         elif call_value != -1:
             if self.dir_files[call_value] == "~/":
-                os.chdir(os.getenv("HOME"))
+                if os.name == "nt": #for windows
+                    os.chdir(os.getenv("USERPROFILE"))
+                else:
+                    os.chdir(os.getenv("HOME"))
             elif self.dir_files[call_value] == "..":
                 os.chdir(os.path.pardir)
             elif self.dir_files[call_value] == "To current view/":
@@ -109,7 +115,10 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
     def handle_set_working_directory(self, new_dir):
         try:
             if new_dir[0] == "~":
-                new_dir = os.getenv("HOME") + new_dir[1:]
+                if os.name == "nt": #for windows
+                    new_dir = os.getenv("USERPROFILE") + new_dir[1:]
+                else:
+                    new_dir = os.getenv("HOME") + new_dir[1:]
             os.chdir(new_dir)
         except:
             sublime.error_message(new_dir + " does not exist")
