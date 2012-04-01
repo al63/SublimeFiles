@@ -31,4 +31,4 @@ regardless of system. However, this is untested on Windows.
 
 __Installation__
 
-To install Sublime Files, just use Sublime Package Control
+Sublime Files can be installed through Sublime Package Control
