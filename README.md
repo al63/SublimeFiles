@@ -26,3 +26,9 @@ use the keybinding ctrl+super+n
 
 Built with Mac OSX, but all the calls have been designed to be platform agnostic and thus should work
 regardless of system. However, this is untested on Windows.
+
+----------
+
+__Installation__
+
+To install Sublime Files, just use Sublime Package Control
