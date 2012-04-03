@@ -3,6 +3,16 @@ import os, shutil
 
 class SublimeFilesCommand(sublime_plugin.WindowCommand):
     def run(self, command):
+        #define home variable if necessary
+        try:
+            self.home
+        except:
+            if os.name == "nt":
+                self.home = "USERPROFILE"
+            else:
+                self.home = "HOME"
+
+        #handle command
         if command == "navigate":
             self.open_navigator()
         elif command == "setdir":
@@ -19,17 +29,14 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 self.dir_files.append(element)
         self.dir_files = self.dir_files[:2] + sorted(self.dir_files[2:], key=sort_files)
         self.dir_files.append("~/")
-        self.dir_files.append("To current view/")
+        #self.dir_files.append("To current view/")
         self.window.show_quick_panel(self.dir_files, self.handle_navigator_option, sublime.MONOSPACE_FONT)
 
     #handles user's selection in open_navigator. Either cd's into new directory, or opens file
     def handle_navigator_option(self, call_value):
         if call_value != -1 and call_value != 0:
             if self.dir_files[call_value] == "~/":
-                if os.name == "nt": #for windows
-                    os.chdir(os.getenv("USERPROFILE"))
-                else:
-                    os.chdir(os.getenv("HOME"))
+                os.chdir(os.getenv(self.home))
             elif self.dir_files[call_value] == "..":
                 os.chdir(os.path.pardir)
             elif self.dir_files[call_value] == "To current view/":
@@ -85,7 +92,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 self.dir_files.append(element + "/")
         self.dir_files = self.dir_files[:2] + sorted(self.dir_files[2:], key=sort_files)
         self.dir_files.append("~/")
-        self.dir_files.append("To current view/")
+        #self.dir_files.append("To current view/")
         self.window.show_quick_panel(self.dir_files, self.handle_copymove_navigator_option, sublime.MONOSPACE_FONT)
 
     #Handles selections from open_copymove_navigator
@@ -97,10 +104,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 self.window.show_input_panel("New Name:", self.current_file, self.handle_move_file, None, None)
         elif call_value != -1:
             if self.dir_files[call_value] == "~/":
-                if os.name == "nt": #for windows
-                    os.chdir(os.getenv("USERPROFILE"))
-                else:
-                    os.chdir(os.getenv("HOME"))
+                os.chdir(os.getenv(self.home))
             elif self.dir_files[call_value] == "..":
                 os.chdir(os.path.pardir)
             elif self.dir_files[call_value] == "To current view/":
@@ -115,10 +119,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
     def handle_set_working_directory(self, new_dir):
         try:
             if new_dir[0] == "~":
-                if os.name == "nt": #for windows
-                    new_dir = os.getenv("USERPROFILE") + new_dir[1:]
-                else:
-                    new_dir = os.getenv("HOME") + new_dir[1:]
+                new_dir = os.getenv(self.home) + new_dir[1:]
             os.chdir(new_dir)
         except:
             sublime.error_message(new_dir + " does not exist")
