@@ -57,8 +57,9 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     #Options for when a user selects "."
     def open_directory_options(self): 
-        self.directory_options = ["* Do nothing", "* Create new file"]
-        self.window.show_quick_panel(self.directory_options, self.handle_directory_option, sublime.MONOSPACE_FONT)
+        if self.home == "HOME":
+            self.directory_options = ["* Do nothing", "* Create new file"]
+            self.window.show_quick_panel(self.directory_options, self.handle_directory_option, sublime.MONOSPACE_FONT)
 
     #Handle choice for when user selects "."
     def handle_directory_option(self, call_value):
