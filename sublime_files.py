@@ -29,7 +29,11 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 self.dir_files.append(element)
         self.dir_files = self.dir_files[:2] + sorted(self.dir_files[2:], key=sort_files)
         self.dir_files.append("~/")
-        #self.dir_files.append("To current view/")
+
+        #only show "to current view" if actually modifying a file with a view we can get to.
+        if self.window.active_view().file_name() is not None:
+            self.dir_files.append("To current view/")
+
         self.window.show_quick_panel(self.dir_files, self.handle_navigator_option, sublime.MONOSPACE_FONT)
 
     #handles user's selection in open_navigator. Either cd's into new directory, or opens file
@@ -92,7 +96,9 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 self.dir_files.append(element + "/")
         self.dir_files = self.dir_files[:2] + sorted(self.dir_files[2:], key=sort_files)
         self.dir_files.append("~/")
-        #self.dir_files.append("To current view/")
+        
+        if self.window.active_view().file_name() is not None:
+            self.dir_files.append("To current view/")
         self.window.show_quick_panel(self.dir_files, self.handle_copymove_navigator_option, sublime.MONOSPACE_FONT)
 
     #Handles selections from open_copymove_navigator
