@@ -48,4 +48,4 @@ Options of note are ".", "..", "~/", and "\* To current view".
 "." Stays in the current directory, and provides potential options for manipulating the current directory. 
 (current only allows creating new files into the directory).
 
-".." navigates one level above the current directory, "~/" goes to the home directory, and "\* To current view" goes to the directory containing the current file being editted.
+".." navigates one level above the current directory, "~/" goes to the home directory, and "\* To current view" goes to the directory containing the current file being edited.
