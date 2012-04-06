@@ -43,10 +43,9 @@ the key command ctrl+super+n (or ctrl+alt+n for windows).
 Directories and files will show up. By selecting a directory, Sublime Files will move into the directory.
 By selecting a file, Sublime Files will pop up options that can be applied onto the file.
 
-Options of note are ".", "..", "~/", and "To Current View/". 
+Options of note are ".", "..", "~/", and "\* To current view". 
 
 "." Stays in the current directory, and provides potential options for manipulating the current directory. 
 (current only allows creating new files into the directory).
 
-".." navigates one level above the current directory, "~/" goes to the home directory, and "To Current View/"
-goes to the directory containing the current file being editted.
+".." navigates one level above the current directory, "~/" goes to the home directory, and "\* To current view" goes to the directory containing the current file being editted.
