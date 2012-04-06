@@ -32,3 +32,21 @@ regardless of system. However, this is untested on Windows.
 __Installation__
 
 Sublime Files can be installed through Sublime Package Control
+
+----------
+
+__Usage__
+
+Sublime files an be activated with the command palette command: "Sublime Files: Open Navigator", or with
+the key command ctrl+super+n (or ctrl+alt+n for windows).
+
+Directories and files will show up. By selecting a directory, Sublime Files will move into the directory.
+By selecting a file, Sublime Files will pop up options that can be applied onto the file.
+
+Options of note are ".", "..", "~/", and "To Current View/". 
+
+"." Stays in the current directory, and provides potential options for manipulating the current directory. 
+(current only allows creating new files into the directory).
+
+".." navigates one level above the current directory, "~/" goes to the home directory, and "To Current View/"
+goes to the directory containing the current file being editted.

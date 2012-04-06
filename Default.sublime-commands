@@ -3,10 +3,5 @@
         "caption": "Sublime Files: Open Navigator / Change Directory",
         "command": "sublime_files",
         "args": {"command":"navigate"}
-    },
-    {
-        "caption": "Sublime Files: Set Working Directory",
-        "command": "sublime_files",
-        "args": {"command":"setdir"}
     }
 ]
