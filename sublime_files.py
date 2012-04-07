@@ -19,7 +19,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     #function for showing panel for changing directories / opening files
     def open_navigator(self):
-        self.dir_files = [". (" + os.getcwd() + ")", ".."]
+        self.dir_files = ["." + "(" + os.getcwd() +")", ".."]
         for element in os.listdir(os.getcwd()):
             fullpath = os.path.join(os.getcwd(), element)
             if os.path.isdir(fullpath):
@@ -27,7 +27,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             else:
                 self.dir_files.append(element)
         self.dir_files = self.dir_files[:2] + sorted(self.dir_files[2:], key=sort_files)
-        self.dir_files.append("~/")
+        self.dir_files.append("* To home directory")
 
         #only show "to current view" if actually modifying a file with a view we can get to.
         if self.window.active_view().file_name() is not None:
@@ -37,10 +37,10 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     #handles user's selection in open_navigator. Either cd's into new directory, or opens file
     def handle_navigator_option(self, call_value):
-        if call_value == 0: #stay in current directory
-            self.open_directory_options()
-        elif call_value != -1:
-            if self.dir_files[call_value] == "~/":
+        if call_value != -1:
+            if call_value == 0: #handle directory actions
+                self.open_directory_options()
+            elif self.dir_files[call_value] == "* To home directory":
                 os.chdir(os.getenv(self.home))
             elif self.dir_files[call_value] == "..":
                 os.chdir(os.path.pardir)
@@ -53,12 +53,13 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 else:
                     self.open_file_options(self.dir_files[call_value])
                     return
+
             self.open_navigator()
 
     #Options for when a user selects "."
     def open_directory_options(self): 
         if self.home == "HOME":
-            self.directory_options = ["* Do nothing", "* Create new file"]
+            self.directory_options = ["* Do nothing", "* Create new file", "* Back"]
             self.window.show_quick_panel(self.directory_options, self.handle_directory_option, sublime.MONOSPACE_FONT)
 
     #Handle choice for when user selects "."
@@ -69,6 +70,8 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 return
             elif selection == "* Create new file":
                 self.window.show_input_panel("File name: ", "", self.handle_new_file_name, None, None)
+            elif selection == "* Back":
+                self.open_navigator()
 
     #Displays potential commands a user can execute on the given file
     def open_file_options(self, filename):
@@ -111,7 +114,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             if os.path.isdir(fullpath):
                 self.dir_files.append(element + "/")
         self.dir_files = self.dir_files[:2] + sorted(self.dir_files[2:], key=sort_files)
-        self.dir_files.append("~/")
+        self.dir_files.append("* To home directory")
 
         if self.window.active_view().file_name() is not None:
             self.dir_files.append("* To current view")
@@ -125,7 +128,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             else:
                 self.window.show_input_panel("New Name:", self.current_file, self.handle_move_file, None, None)
         elif call_value != -1:
-            if self.dir_files[call_value] == "~/":
+            if self.dir_files[call_value] == "To home directory":
                 os.chdir(os.getenv(self.home))
             elif self.dir_files[call_value] == "..":
                 os.chdir(os.path.pardir)
