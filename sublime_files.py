@@ -1,6 +1,5 @@
 import sublime, sublime_plugin
-import os, shutil
-from subprocess import call
+import os
 
 class SublimeFilesCommand(sublime_plugin.WindowCommand):
     def run(self, command):
@@ -60,22 +59,19 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 else:
                     self.window.open_file(os.path.join(os.getcwd(), fullpath))
                     return
-
             self.open_navigator()
 
     #Options for when a user selects "."
     def open_directory_options(self): 
         if self.home == "HOME":
-            self.directory_options = ["* Do nothing", "* Create new file", "* Set bookmark here", "* Back"]
+            self.directory_options = ["* Create new file", "* Set bookmark here", "* Back"]
             self.window.show_quick_panel(self.directory_options, self.handle_directory_option, sublime.MONOSPACE_FONT)
 
     #Handle choice for when user selects "."
     def handle_directory_option(self, call_value):
         if call_value != -1:
             selection = self.directory_options[call_value]
-            if selection == "* Do nothing":
-                return
-            elif selection == "* Create new file":
+            if selection == "* Create new file":
                 self.window.show_input_panel("File name: ", "", self.handle_new_file_name, None, None)
             elif selection == "* Back":
                 self.open_navigator()
@@ -85,6 +81,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
     def handle_new_file_name(self, file_name):
         call(["touch", file_name])
         self.window.open_file(file_name)
+
 
 def sort_files(filename):
     total_weight = 0

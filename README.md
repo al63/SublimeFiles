@@ -1,7 +1,7 @@
 Sublime Files
 =============
 
-__A keyboard driven file management/navigation/opening plugin for Sublime Text 2__
+__A keyboard driven file navigation/opening plugin for Sublime Text 2__
 
 ------------
 
