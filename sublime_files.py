@@ -24,7 +24,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     #function for showing panel for changing directories / opening files
     def open_navigator(self):
-        self.dir_files = ["." + "(" + os.getcwd() +")", "..", "~/"]
+        self.dir_files = ["." + "(" + os.getcwd() +")", ".."]
         for element in os.listdir(os.getcwd()):
             fullpath = os.path.join(os.getcwd(), element)
             if os.path.isdir(fullpath):
@@ -32,13 +32,13 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             else:
                 self.dir_files.append(element)
         self.dir_files = self.dir_files[:2] + sorted(self.dir_files[2:], key=sort_files)
+
+        self.dir_files.insert(2, "~/")
         if self.bookmark is not None:
             self.dir_files.append("* To bookmark")
-
-        #only show "to current view" if actually modifying a file with a view we can get to.
         if self.window.active_view().file_name() is not None:
             self.dir_files.append("* To current view")
-
+            
         self.window.show_quick_panel(self.dir_files, self.handle_navigator_option, sublime.MONOSPACE_FONT)
 
 
@@ -83,7 +83,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 self.open_navigator()
             elif selection == "* Set bookmark here":
                 self.bookmark = os.getcwd()
-                
+
 
     def handle_new_file_name(self, file_name):
         call(["touch", file_name])
