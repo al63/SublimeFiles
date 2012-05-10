@@ -3,24 +3,28 @@ import os
 
 class SublimeFilesCommand(sublime_plugin.WindowCommand):
     def run(self, command):
-        #define variables if necessary (basically a hack)
         try:
             self.home
         except:
+            #first time starting up. setup home and change to appropriate start directory
             if os.name == "nt":
                 self.home = "USERPROFILE"
             else:
                 self.home = "HOME"
-            os.chdir(os.getenv(self.home))
+            try:
+                os.chdir(os.path.dirname(sublime.active_window().active_view().file_name()))
+            except:
+                os.chdir(os.getenv(self.home))
             self.bookmark = None
 
         #handle command
         if command == "navigate":
             self.open_navigator()
 
+
     #function for showing panel for changing directories / opening files
     def open_navigator(self):
-        self.dir_files = ["." + "(" + os.getcwd() +")", ".."]
+        self.dir_files = ["." + "(" + os.getcwd() +")", "..", "~/"]
         for element in os.listdir(os.getcwd()):
             fullpath = os.path.join(os.getcwd(), element)
             if os.path.isdir(fullpath):
@@ -28,7 +32,6 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             else:
                 self.dir_files.append(element)
         self.dir_files = self.dir_files[:2] + sorted(self.dir_files[2:], key=sort_files)
-        self.dir_files.append("* To home directory")
         if self.bookmark is not None:
             self.dir_files.append("* To bookmark")
 
@@ -38,13 +41,14 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
         self.window.show_quick_panel(self.dir_files, self.handle_navigator_option, sublime.MONOSPACE_FONT)
 
+
     #handles user's selection in open_navigator. Either cd's into new directory, or opens file
     def handle_navigator_option(self, call_value):
         if call_value != -1:
             option = self.dir_files[call_value];
             if call_value == 0: #handle directory actions
                 self.open_directory_options()
-            elif option == "* To home directory":
+            elif option == "~/":
                 os.chdir(os.getenv(self.home))
             elif option == "..":
                 os.chdir(os.path.pardir)
@@ -61,11 +65,13 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                     return
             self.open_navigator()
 
+
     #Options for when a user selects "."
     def open_directory_options(self): 
         if self.home == "HOME":
             self.directory_options = ["* Create new file", "* Set bookmark here", "* Back"]
             self.window.show_quick_panel(self.directory_options, self.handle_directory_option, sublime.MONOSPACE_FONT)
+
 
     #Handle choice for when user selects "."
     def handle_directory_option(self, call_value):
@@ -77,6 +83,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 self.open_navigator()
             elif selection == "* Set bookmark here":
                 self.bookmark = os.getcwd()
+                
 
     def handle_new_file_name(self, file_name):
         call(["touch", file_name])
