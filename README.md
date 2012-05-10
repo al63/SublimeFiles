@@ -7,15 +7,7 @@ __A keyboard driven file management/navigation/opening plugin for Sublime Text 2
 
 Sublime Files works entirely through the command palette. By running the
 Sublime Files Navigator, you can "cd" around directories similar to how
-you would on a command line. On selecting a file, a user is presented with 
-the following options:
-
-
-* Open
-* Rename
-* Delete
-* Copy
-* Move
+you would on a command line in order to open up files. New files will open up in new tabs.
 
 
 Because Sublime Files actually navigates the file system by changing directories,
