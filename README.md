@@ -1,5 +1,4 @@
 Sublime Files
-=============
 
 __A keyboard driven file navigation/opening plugin for Sublime Text 2__
 
@@ -32,12 +31,5 @@ __Usage__
 Sublime files an be activated with the command palette command: "Sublime Files: Open Navigator", or with
 the key command ctrl+super+n (or ctrl+alt+n for windows).
 
-Directories and files will show up. By selecting a directory, Sublime Files will move into the directory.
-By selecting a file, Sublime Files will pop up options that can be applied onto the file.
-
-Options of note are ".", "..", "~/", and "\* To current view". 
-
-"." Stays in the current directory, and provides potential options for manipulating the current directory. 
-(current only allows creating new files into the directory).
-
-".." navigates one level above the current directory, "~/" goes to the home directory, and "\* To current view" goes to the directory containing the current file being edited.
+Selecting a directory will nagivate to the directory and selecting a file will open the file.
+Selecting "." (current directory) will pop up a small list of actions that can be applied onto the directory.
