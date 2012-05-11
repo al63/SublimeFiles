@@ -33,3 +33,13 @@ the key command ctrl+super+n (or ctrl+alt+n for windows).
 
 Selecting a directory will nagivate to the directory and selecting a file will open the file.
 Selecting "." (current directory) will pop up a small list of actions that can be applied onto the directory.
+
+----------
+
+__Open Terminal__
+For OSX/Linux systems, Sublime Files can open up a terminal at the current directory navigated to.
+In order for this feature to work properly, you will have to modify the TerminalCommand text file
+located in the SublimeFiles plugin directory with the proper command. As a default, it is set to open up
+Terminal.app for OSX systems. 
+
+For example, Gnome-Terminal users will want to change TerminalCommand to: 'gnome-terminal --working-directory='

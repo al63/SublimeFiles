@@ -1,5 +1,5 @@
 import sublime, sublime_plugin
-import os, sys
+import os, sys, inspect
 from subprocess import call
 
 class SublimeFilesCommand(sublime_plugin.WindowCommand):
@@ -17,6 +17,11 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             except:
                 os.chdir(os.getenv(self.home))
             self.bookmark = None
+            self.term_command = None
+            term_file = open(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + os.sep + "TerminalCommand", 'r')
+            cmd = term_file.readline().rstrip('\n')
+            self.term_command = cmd[1:len(cmd)-1:]
+            term_file.close()
 
         #handle command
         if command == "navigate":
@@ -70,8 +75,8 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
     def open_directory_options(self): 
         if self.home == "HOME":
             self.directory_options = ["* Create new file", "* Set bookmark here","* Back"]
-            #Terminal opening really mac only as of now...
-            if sys.platform == "darwin":
+            #Terminal opening. only for posix at the moment
+            if os.name == 'posix' and self.term_command is not None:
                 self.directory_options.append("* Open terminal here")
             self.window.show_quick_panel(self.directory_options, self.handle_directory_option, sublime.MONOSPACE_FONT)
 
@@ -92,7 +97,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 actual_dir = ""
                 for element in directory_split:
                     actual_dir += element + "\ " 
-                os.system("open -a Terminal " + actual_dir[:len(actual_dir)-2])
+                os.system(self.term_command + actual_dir[:len(actual_dir)-2])
 
 
     def handle_new_file_name(self, file_name):
