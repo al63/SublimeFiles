@@ -1,4 +1,5 @@
 Sublime Files
+-------------
 
 __A keyboard driven file navigation/opening plugin for Sublime Text 2__
 
@@ -44,4 +45,7 @@ In order for this feature to work properly, you will have to modify the Terminal
 located in the SublimeFiles plugin directory with the proper command. As a default, it is set to open up
 Terminal.app for OSX systems. 
 
-For example, Gnome-Terminal users will want to change TerminalCommand to: 'gnome-terminal --working-directory='
+For example, Gnome Terminal and iTerm2 users respectively will want to change TerminalCommand to: 
+    - 'gnome-terminal --working-directory='
+    - 'open -a iTerm\ 2 '
+
