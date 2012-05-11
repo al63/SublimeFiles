@@ -7,7 +7,8 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
         try:
             self.home
         except:
-            #first time starting up. setup home and change to appropriate start directory
+            #first time starting up. setup work here.
+            settings = sublime.load_settings('SublimeFiles.sublime-settings')
             if os.name == "nt":
                 self.home = "USERPROFILE"
             else:
@@ -17,11 +18,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             except:
                 os.chdir(os.getenv(self.home))
             self.bookmark = None
-            self.term_command = None
-            term_file = open(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + os.sep + "TerminalCommand", 'r')
-            cmd = term_file.readline().rstrip('\n')
-            self.term_command = cmd[1:len(cmd)-1:]
-            term_file.close()
+            self.term_command = settings.get('term_command')
 
         #handle command
         if command == "navigate":

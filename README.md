@@ -41,12 +41,12 @@ __Open Terminal__
 
 
 For OSX/Linux systems, Sublime Files can open up a terminal at the current directory navigated to.
-In order for this feature to work properly, you will have to modify the TerminalCommand text file
-located in the SublimeFiles plugin directory with the proper command. As a default, it is set to open up
-Terminal.app for OSX systems. 
+In order for this feature to work properly, you will have to modify the term\_command field in the 
+SublimeFiles.sublime-settings text file
+located in the SublimeFiles plugin directory. As a default, it is set to open up Terminal.app for OSX systems. 
 
-For example, Gnome Terminal and iTerm2 users respectively will want to change TerminalCommand to: 
+For example, Gnome Terminal and iTerm2 users respectively will want to change term\_command in SublimeFiles.sublime-settings to: 
 
-    - 'gnome-terminal --working-directory='
-    - 'open -a iTerm\ 2 '
+    - "term\_command": "gnome-terminal --working-directory="
+    - "term\_command" : "open -a iTerm\ 2 "
 
