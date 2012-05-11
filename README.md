@@ -46,6 +46,7 @@ located in the SublimeFiles plugin directory with the proper command. As a defau
 Terminal.app for OSX systems. 
 
 For example, Gnome Terminal and iTerm2 users respectively will want to change TerminalCommand to: 
+
     - 'gnome-terminal --working-directory='
     - 'open -a iTerm\ 2 '
 
