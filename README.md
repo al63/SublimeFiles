@@ -37,6 +37,8 @@ Selecting "." (current directory) will pop up a small list of actions that can b
 ----------
 
 __Open Terminal__
+
+
 For OSX/Linux systems, Sublime Files can open up a terminal at the current directory navigated to.
 In order for this feature to work properly, you will have to modify the TerminalCommand text file
 located in the SublimeFiles plugin directory with the proper command. As a default, it is set to open up
