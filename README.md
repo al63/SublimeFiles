@@ -47,6 +47,6 @@ located in the SublimeFiles plugin directory. As a default, it is set to open up
 
 For example, Gnome Terminal and iTerm2 users respectively will want to change term\_command in SublimeFiles.sublime-settings to: 
 
-    - "term\_command": "gnome-terminal --working-directory="
-    - "term\_command" : "open -a iTerm\ 2 "
+    - "term_command": "gnome-terminal --working-directory="
+    - "term_command" : "open -a iTerm\ 2 "
 
