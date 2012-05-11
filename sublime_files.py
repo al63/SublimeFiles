@@ -1,5 +1,5 @@
 import sublime, sublime_plugin
-import os
+import os, sys
 from subprocess import call
 
 class SublimeFilesCommand(sublime_plugin.WindowCommand):
@@ -69,7 +69,10 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
     #Options for when a user selects "."
     def open_directory_options(self): 
         if self.home == "HOME":
-            self.directory_options = ["* Open Terminal", "* Create new file", "* Set bookmark here", "* Back"]
+            self.directory_options = ["* Create new file", "* Set bookmark here","* Back"]
+            #Terminal opening really mac only as of now...
+            if sys.platform == "darwin":
+                self.directory_options.append("* Open terminal here")
             self.window.show_quick_panel(self.directory_options, self.handle_directory_option, sublime.MONOSPACE_FONT)
 
 
@@ -84,7 +87,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             elif selection == "* Set bookmark here":
                 self.bookmark = os.getcwd()
                 self.open_navigator()
-            elif selection == "* Open Terminal":
+            elif selection == "* Open terminal here":
                 directory_split = os.getcwd().split()
                 actual_dir = ""
                 for element in directory_split:
