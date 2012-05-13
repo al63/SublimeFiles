@@ -3,7 +3,6 @@ Sublime Files
 
 __A keyboard driven file navigation/opening plugin for Sublime Text 2__
 
-------------
 
 Sublime Files works entirely through the command palette. By running the
 Sublime Files Navigator, you can "cd" around directories similar to how
