@@ -21,8 +21,6 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 os.chdir(os.getenv(self.home))
             self.bookmark = None
             self.term_command = settings.get('term_command')
-
-        #handle command
         if command == 'navigate':
             self.open_navigator()
 
@@ -52,7 +50,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             option = self.dir_files[call_value];
             if call_value == 0:
                 self.open_navigator()
-            elif call_value == 1: #handle directory actions
+            elif call_value == 1: #Directory Actions
                 self.open_directory_options()
             elif option == '~/':
                 os.chdir(os.getenv(self.home))
@@ -87,7 +85,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
         if call_value != -1:
             selection = self.directory_options[call_value]
             if selection == bullet + ' Create new file':
-                self.window.show_input_panel('File name: ', '', self.handle_new_file_name, None, None)
+                self.window.show_input_panel('File name: ', '', self.handle_new_file, None, None)
             elif selection == bullet + ' Back':
                 self.open_navigator()
             elif selection == bullet + ' Set bookmark here':
@@ -103,7 +101,8 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 sublime_command_line(['-a', os.getcwd()])
 
 
-    def handle_new_file_name(self, file_name):
+    #Handle creating new file
+    def handle_new_file(self, file_name):
         subprocess.call(['touch', file_name])
         self.window.open_file(file_name)
 
@@ -116,6 +115,7 @@ def sort_files(filename):
         total_weight += 1
     return total_weight
 
+
 #Hack to add folders to sidebar (thank you wbond for your forum post!)
 def get_sublime_path():
     if sublime.platform() == 'osx':
@@ -124,6 +124,7 @@ def get_sublime_path():
         return open('/proc/self/cmdline').read().split(chr(0))[0]
     else:
         return sys.executable
+
 
 def sublime_command_line(args):
     args.insert(0, get_sublime_path())
