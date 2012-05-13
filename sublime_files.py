@@ -1,6 +1,6 @@
 import sublime, sublime_plugin
-import os, sys, inspect
-from subprocess import call
+import os, sys, glob
+import subprocess
 
 class SublimeFilesCommand(sublime_plugin.WindowCommand):
     def run(self, command):
@@ -71,10 +71,10 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
     #Options for when a user selects '.'
     def open_directory_options(self): 
         if self.home == 'HOME':
-            self.directory_options = ['* Create new file', '* Set bookmark here','* Back']
+            self.directory_options = ['* Add folder to project', '* Create new file', '* Set bookmark here','* Back']
             #Terminal opening. only for posix at the moment
             if os.name == 'posix' and self.term_command is not None:
-                self.directory_options.append('* Open terminal here')
+                self.directory_options.insert(0,'* Open terminal here')
             self.window.show_quick_panel(self.directory_options, self.handle_directory_option, sublime.MONOSPACE_FONT)
 
 
@@ -95,10 +95,12 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 for element in directory_split:
                     actual_dir += element + '\ ' 
                 os.system(self.term_command + actual_dir[:len(actual_dir)-2])
+            elif selection == '* Add folder to project':
+                sublime_command_line(['-a', os.getcwd()])
 
 
     def handle_new_file_name(self, file_name):
-        call(['touch', file_name])
+        subprocess.call(['touch', file_name])
         self.window.open_file(file_name)
 
 
@@ -109,3 +111,16 @@ def sort_files(filename):
     if filename[-1] == '/':
         total_weight += 1
     return total_weight
+
+#Hack to add folders to sidebar (thank you wbond for your forum post!)
+def get_sublime_path():
+    if sublime.platform() == 'osx':
+        return '/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl'
+    elif sublime.platform() == 'linux':
+        return open('/proc/self/cmdline').read().split(chr(0))[0]
+    else:
+        return sys.executable
+
+def sublime_command_line(args):
+    args.insert(0, get_sublime_path())
+    return subprocess.Popen(args)
