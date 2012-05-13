@@ -27,11 +27,11 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     #function for showing panel for changing directories / opening files
     def open_navigator(self):
-        self.dir_files = ['[' + os.getcwd() +']', bullet + ' Directory actions', '../', '~/']
+        self.dir_files = ['[' + os.getcwd() +']', bullet + ' Directory actions', '..' + os.sep, '~' + os.sep]
         for element in os.listdir(os.getcwd()):
             fullpath = os.path.join(os.getcwd(), element)
             if os.path.isdir(fullpath):
-                self.dir_files.append(element + '/')
+                self.dir_files.append(element + os.sep)
             else:
                 self.dir_files.append(element)
         self.dir_files = self.dir_files[:4] + sorted(self.dir_files[4:], key=sort_files)
@@ -52,19 +52,19 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 self.open_navigator()
             elif call_value == 1: #Directory Actions
                 self.open_directory_options()
-            elif option == '~/':
+            elif option == '~' + os.sep:
                 os.chdir(os.getenv(self.home))
-            elif option == '../':
+            elif option == '..' + os.sep:
                 os.chdir(os.path.pardir)
             elif option == bullet + ' To current view':
                 os.chdir(os.path.dirname(self.window.active_view().file_name()))
             elif option.startswith(bullet + ' To bookmark'):
                 os.chdir(self.bookmark)
-            else:
+            else: 
                 fullpath = os.path.join(os.getcwd(), self.dir_files[call_value])
-                if os.path.isdir(fullpath):
+                if os.path.isdir(fullpath): #navigate to directory
                     os.chdir(self.dir_files[call_value])
-                else:
+                else: #open file
                     self.window.open_file(os.path.join(os.getcwd(), fullpath))
                     return
             self.open_navigator()
@@ -72,12 +72,11 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     #Options for when a user selects '.'
     def open_directory_options(self): 
-        if self.home == 'HOME':
-            self.directory_options = [bullet+' Add folder to project', bullet+' Create new file', bullet+' Set bookmark here',bullet+' Back']
-            #Terminal opening. only for posix at the moment
-            if os.name == 'posix' and self.term_command is not None:
-                self.directory_options.insert(0, bullet + ' Open terminal here')
-            self.window.show_quick_panel(self.directory_options, self.handle_directory_option, sublime.MONOSPACE_FONT)
+        self.directory_options = [bullet+' Add folder to project', bullet+' Create new file', bullet+' Set bookmark here',bullet+' Back']
+        #Terminal opening. only for posix at the moment
+        if os.name == 'posix' and self.term_command is not None:
+            self.directory_options.insert(0, bullet + ' Open terminal here')
+        self.window.show_quick_panel(self.directory_options, self.handle_directory_option, sublime.MONOSPACE_FONT)
 
 
     #Handle choice for when user selects '.'
@@ -103,8 +102,13 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     #Handle creating new file
     def handle_new_file(self, file_name):
-        subprocess.call(['touch', file_name])
-        self.window.open_file(file_name)
+        if os.path.isfile(os.getcwd() + os.sep + file_name):
+            sublime.error_message(file_name + " already exists")
+            return
+
+        FILE = open(os.getcwd() + os.sep + file_name, 'a')
+        FILE.close()
+        self.window.open_file(os.getcwd() + os.sep + file_name)
 
 
 def sort_files(filename):
