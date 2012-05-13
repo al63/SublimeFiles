@@ -2,7 +2,9 @@ import sublime, sublime_plugin
 import os, sys, glob
 import subprocess
 
+bullet = u'\u2022'
 class SublimeFilesCommand(sublime_plugin.WindowCommand):
+    global bullet
     def run(self, command):
         try:
             self.home
@@ -27,19 +29,19 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     #function for showing panel for changing directories / opening files
     def open_navigator(self):
-        self.dir_files = ['.' + '(' + os.getcwd() +')', '..', '~/']
+        self.dir_files = ['[' + os.getcwd() +']', bullet + ' Directory actions', '../', '~/']
         for element in os.listdir(os.getcwd()):
             fullpath = os.path.join(os.getcwd(), element)
             if os.path.isdir(fullpath):
                 self.dir_files.append(element + '/')
             else:
                 self.dir_files.append(element)
-        self.dir_files = self.dir_files[:3] + sorted(self.dir_files[3:], key=sort_files)
+        self.dir_files = self.dir_files[:4] + sorted(self.dir_files[4:], key=sort_files)
 
         if self.window.active_view().file_name() is not None:
-            self.dir_files.append('* To current view')
+            self.dir_files.insert(2, bullet + ' To current view')
         if self.bookmark is not None:
-            self.dir_files.append('* To bookmark (' + self.bookmark + ')')
+            self.dir_files.append(bullet + ' To bookmark (' + self.bookmark + ')')
             
         self.window.show_quick_panel(self.dir_files, self.handle_navigator_option, sublime.MONOSPACE_FONT)
 
@@ -48,15 +50,17 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
     def handle_navigator_option(self, call_value):
         if call_value != -1:
             option = self.dir_files[call_value];
-            if call_value == 0: #handle directory actions
+            if call_value == 0:
+                self.open_navigator()
+            elif call_value == 1: #handle directory actions
                 self.open_directory_options()
             elif option == '~/':
                 os.chdir(os.getenv(self.home))
-            elif option == '..':
+            elif option == '../':
                 os.chdir(os.path.pardir)
-            elif option == '* To current view':
+            elif option == bullet + ' To current view':
                 os.chdir(os.path.dirname(self.window.active_view().file_name()))
-            elif option.startswith('* To bookmark'):
+            elif option.startswith(bullet + ' To bookmark'):
                 os.chdir(self.bookmark)
             else:
                 fullpath = os.path.join(os.getcwd(), self.dir_files[call_value])
@@ -71,10 +75,10 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
     #Options for when a user selects '.'
     def open_directory_options(self): 
         if self.home == 'HOME':
-            self.directory_options = ['* Add folder to project', '* Create new file', '* Set bookmark here','* Back']
+            self.directory_options = [bullet+' Add folder to project', bullet+' Create new file', bullet+' Set bookmark here',bullet+' Back']
             #Terminal opening. only for posix at the moment
             if os.name == 'posix' and self.term_command is not None:
-                self.directory_options.insert(0,'* Open terminal here')
+                self.directory_options.insert(0, bullet + ' Open terminal here')
             self.window.show_quick_panel(self.directory_options, self.handle_directory_option, sublime.MONOSPACE_FONT)
 
 
@@ -82,20 +86,20 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
     def handle_directory_option(self, call_value):
         if call_value != -1:
             selection = self.directory_options[call_value]
-            if selection == '* Create new file':
+            if selection == bullet + ' Create new file':
                 self.window.show_input_panel('File name: ', '', self.handle_new_file_name, None, None)
-            elif selection == '* Back':
+            elif selection == bullet + ' Back':
                 self.open_navigator()
-            elif selection == '* Set bookmark here':
+            elif selection == bullet + ' Set bookmark here':
                 self.bookmark = os.getcwd()
                 self.open_navigator()
-            elif selection == '* Open terminal here':
+            elif selection == bullet+ ' Open terminal here':
                 directory_split = os.getcwd().split()
                 actual_dir = ''
                 for element in directory_split:
                     actual_dir += element + '\ ' 
                 os.system(self.term_command + actual_dir[:len(actual_dir)-2])
-            elif selection == '* Add folder to project':
+            elif selection == bullet + ' Add folder to project':
                 sublime_command_line(['-a', os.getcwd()])
 
 

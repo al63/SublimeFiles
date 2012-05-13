@@ -15,8 +15,7 @@ To open the navigator, you can either just invoke the command pallette command o
 use the keybinding ctrl+super+n 
 
 
-Built with Mac OSX, but all the calls have been designed to be platform agnostic and thus should work
-regardless of system. However, this is untested on Windows.
+Built with Mac OSX, but all the calls have been designed to be platform agnostic and thus should work regardless of system. However, this is untested on Windows.
 
 ----------
 
@@ -28,20 +27,20 @@ Sublime Files can be installed through Sublime Package Control.
 
 __Usage__
 
-Sublime files an be activated with the command palette command: "Sublime Files: Open Navigator", or with
-the key command ctrl+super+n (or ctrl+alt+n for windows).
-Selecting a directory will nagivate to the directory and selecting a file will open the file.
+Sublime files an be activated with the command palette command: "Sublime Files: Open Navigator", or with the key command ctrl+super+n (or ctrl+alt+n for windows).
+The first option will always show the current directory. Selecting another directory will nagivate to that directory and selecting a file will open that file.
 
 
 There are a few notable options:
 
 
-- Selecting "." (current directory) will pop up a small list of actions that can be applied onto the directory. Mainly,
-a user can create new files, add the directory to the current project, and open a terminal at the directory.
+- Selecting "Directory actions" will pop up a small list of actions that can be applied onto the current directory. Mainly, a user can create new files, add the directory to the current project, and open a terminal at the directory.
 
 - Selecting "~/" navigates to the home directory.
 
-- Selecting "\* To current View" navigates to the directory of the current file being editted.
+- Selecting "../" navigates to the parent directory.
+
+- Selecting "To current View" navigates to the directory of the current file being editted.
 
 
 ----------
