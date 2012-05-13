@@ -42,7 +42,7 @@ a user can create new files, add the directory to the current project, and open 
 
 - Selecting "~/" navigates to the home directory.
 
-- Selecting "\* To current View" navigates to the directory of the current file being editted
+- Selecting "\* To current View" navigates to the directory of the current file being editted.
 
 
 ----------
