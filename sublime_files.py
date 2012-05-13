@@ -2,6 +2,7 @@ import sublime, sublime_plugin
 import os, sys, glob
 import subprocess
 
+#TODO: change separators to be platform based with os.sep
 bullet = u'\u2022'
 class SublimeFilesCommand(sublime_plugin.WindowCommand):
     global bullet
@@ -74,6 +75,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     #Options for when a user selects '.'
     def open_directory_options(self): 
+        #TODO: fix windows bug
         if self.home == 'HOME':
             self.directory_options = [bullet+' Add folder to project', bullet+' Create new file', bullet+' Set bookmark here',bullet+' Back']
             #Terminal opening. only for posix at the moment
