@@ -67,7 +67,8 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     #Options for when a user selects '.'
     def open_directory_options(self): 
-        self.directory_options = [bullet+' Add folder to project', bullet+' Create new file', bullet+' Set bookmark here',bullet+' Back']
+        self.directory_options = [bullet + ' Add folder to project', bullet + ' Create new file', bullet + ' Create new directory',
+                                  bullet + ' Set bookmark here', bullet + ' Back']
         #Terminal opening. only for posix at the moment
         if os.name == 'posix' and self.term_command is not None:
             self.directory_options.insert(0, bullet + ' Open terminal here')
@@ -84,7 +85,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             elif selection == bullet + ' Set bookmark here':
                 self.bookmark = os.getcwd()
                 self.open_navigator()
-            elif selection == bullet+ ' Open terminal here':
+            elif selection == bullet + ' Open terminal here':
                 directory_split = os.getcwd().split()
                 actual_dir = ''
                 for element in directory_split:
@@ -92,18 +93,32 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 os.system(self.term_command + actual_dir[:len(actual_dir)-2])
             elif selection == bullet + ' Add folder to project':
                 sublime_command_line(['-a', os.getcwd()])
+            elif selection == bullet + ' Create new directory':
+                self.window.show_input_panel('Directory name: ', '', self.handle_new_directory, None, None)
 
     #Handle creating new file
     def handle_new_file(self, file_name):
         if os.path.isfile(os.getcwd() + os.sep + file_name):
             sublime.error_message(file_name + " already exists")
             return
+        if os.path.isdir(os.getcwd() + os.sep + file_name):
+            sublime.error_message(file_name + " is already a directory")
+            return
         FILE = open(os.getcwd() + os.sep + file_name, 'a')
         FILE.close()
         self.window.open_file(os.getcwd() + os.sep + file_name)
 
+    #Handle creating new directory
+    def handle_new_directory(self, dir_name):
+        if os.path.isfile(os.getcwd() + os.sep + dir_name):
+            sublime.error_message(dir_name + " is already a file")
+            return
+        if os.path.isdir(os.getcwd() + os.sep + dir_name):
+            sublime.error_message(dir_name + " already exists")
+            return
+        os.makedirs(os.getcwd() + os.sep + dir_name)
 
-#TODO: fix to be os.sep 
+
 def sort_files(filename):
     total_weight = 0
     if filename[0] == '.':
