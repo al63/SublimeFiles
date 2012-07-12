@@ -1,6 +1,10 @@
 import sublime, sublime_plugin
 import os, sys, glob
 import subprocess
+import shlex
+import locale
+from subprocess import Popen
+
 
 bullet = u'\u2022'
 class SublimeFilesCommand(sublime_plugin.WindowCommand):
@@ -86,11 +90,12 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 self.bookmark = os.getcwd()
                 self.open_navigator()
             elif selection == bullet + ' Open terminal here':
-                directory_split = os.getcwd().split()
-                actual_dir = ''
-                for element in directory_split:
-                    actual_dir += element + '\ ' 
-                os.system(self.term_command + actual_dir[:len(actual_dir)-2])
+                command = shlex.split(str(self.term_command))
+                command.append(os.getcwd())
+                try:
+                    Popen(command)
+                except:
+                    sublime.error_message("Unable to open terminal")
             elif selection == bullet + ' Add folder to project':
                 sublime_command_line(['-a', os.getcwd()])
             elif selection == bullet + ' Create new directory':
