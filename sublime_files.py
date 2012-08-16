@@ -30,9 +30,9 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     #function for showing panel for changing directories / opening files
     def open_navigator(self):
-        self.dir_files = ['[' + os.getcwd() +']', bullet + ' Directory actions', '..' + os.sep, '~' + os.sep]
-        for element in os.listdir(os.getcwd()):
-            fullpath = os.path.join(os.getcwd(), element)
+        self.dir_files = ['[' + os.getcwdu() +']', bullet + ' Directory actions', '..' + os.sep, '~' + os.sep]
+        for element in os.listdir(os.getcwdu()):
+            fullpath = os.path.join(os.getcwdu(), element)
             if os.path.isdir(fullpath):
                 self.dir_files.append(element + os.sep)
             else:
@@ -61,11 +61,11 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             elif option.startswith(bullet + ' To bookmark'):
                 os.chdir(self.bookmark)
             else: 
-                fullpath = os.path.join(os.getcwd(), self.dir_files[call_value])
+                fullpath = os.path.join(os.getcwdu(), self.dir_files[call_value])
                 if os.path.isdir(fullpath): #navigate to directory
                     os.chdir(self.dir_files[call_value])
                 else: #open file
-                    self.window.open_file(os.path.join(os.getcwd(), fullpath))
+                    self.window.open_file(os.path.join(os.getcwdu(), fullpath))
                     return
             self.open_navigator()
 
@@ -87,41 +87,41 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             elif selection == bullet + ' Back':
                 self.open_navigator()
             elif selection == bullet + ' Set bookmark here':
-                self.bookmark = os.getcwd()
+                self.bookmark = os.getcwdu()
                 self.open_navigator()
             elif selection == bullet + ' Open terminal here':
                 command = shlex.split(str(self.term_command))
-                command.append(os.getcwd())
+                command.append(os.getcwdu())
                 try:
                     Popen(command)
                 except:
                     sublime.error_message("Unable to open terminal")
             elif selection == bullet + ' Add folder to project':
-                sublime_command_line(['-a', os.getcwd()])
+                sublime_command_line(['-a', os.getcwdu()])
             elif selection == bullet + ' Create new directory':
                 self.window.show_input_panel('Directory name: ', '', self.handle_new_directory, None, None)
 
     #Handle creating new file
     def handle_new_file(self, file_name):
-        if os.path.isfile(os.getcwd() + os.sep + file_name):
+        if os.path.isfile(os.getcwdu() + os.sep + file_name):
             sublime.error_message(file_name + " already exists")
             return
-        if os.path.isdir(os.getcwd() + os.sep + file_name):
+        if os.path.isdir(os.getcwdu() + os.sep + file_name):
             sublime.error_message(file_name + " is already a directory")
             return
-        FILE = open(os.getcwd() + os.sep + file_name, 'a')
+        FILE = open(os.getcwdu() + os.sep + file_name, 'a')
         FILE.close()
-        self.window.open_file(os.getcwd() + os.sep + file_name)
+        self.window.open_file(os.getcwdu() + os.sep + file_name)
 
     #Handle creating new directory
     def handle_new_directory(self, dir_name):
-        if os.path.isfile(os.getcwd() + os.sep + dir_name):
+        if os.path.isfile(os.getcwdu() + os.sep + dir_name):
             sublime.error_message(dir_name + " is already a file")
             return
-        if os.path.isdir(os.getcwd() + os.sep + dir_name):
+        if os.path.isdir(os.getcwdu() + os.sep + dir_name):
             sublime.error_message(dir_name + " already exists")
             return
-        os.makedirs(os.getcwd() + os.sep + dir_name)
+        os.makedirs(os.getcwdu() + os.sep + dir_name)
 
 
 def sort_files(filename):
