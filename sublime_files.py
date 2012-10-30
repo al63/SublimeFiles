@@ -13,7 +13,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
         try:
             self.home
         except:
-            #first time starting up. setup work here.
+            #first time starting up. setup work here. Hilariously hacky.
             settings = sublime.load_settings('SublimeFiles.sublime-settings')
             if os.name == 'nt':
                 self.home = 'USERPROFILE'
@@ -25,12 +25,23 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 os.chdir(os.getenv(self.home))
             self.bookmark = None
             self.term_command = settings.get('term_command')
+            self.drives = [] # windows
         if command == 'navigate':
             self.open_navigator()
 
     #function for showing panel for changing directories / opening files
     def open_navigator(self):
-        self.dir_files = ['[' + os.getcwdu() +']', bullet + ' Directory actions', '..' + os.sep, '~' + os.sep]
+        self.dir_files = ['[' + os.getcwdu() + ']', bullet + ' Directory actions', '..' + os.sep, '~' + os.sep]
+
+        #ugly hack to deal with windows
+        if sublime.platform() == 'windows':
+            if len(self.drives) == 0:
+                for i in range(ord('A'), ord('Z') + 1):
+                    drive = chr(i)
+                    if os.path.exists(drive + ":\\"):
+                        self.drives.append(drive + ':\\')
+            self.dir_files += self.drives
+
         for element in os.listdir(os.getcwdu()):
             fullpath = os.path.join(os.getcwdu(), element)
             if os.path.isdir(fullpath):
@@ -56,6 +67,8 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 os.chdir(os.getenv(self.home))
             elif option == '..' + os.sep:
                 os.chdir(os.path.pardir)
+            elif sublime.platform() == 'windows' and option in self.drives:
+                os.chdir(option)
             elif option == bullet + ' To current view':
                 os.chdir(os.path.dirname(self.window.active_view().file_name()))
             elif option.startswith(bullet + ' To bookmark'):
