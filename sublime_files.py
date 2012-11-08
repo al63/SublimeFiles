@@ -51,7 +51,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
         self.dir_files = self.dir_files[:4] + sorted(self.dir_files[4:], key=sort_files)
         if self.bookmark is not None:
             self.dir_files.insert(2, bullet + ' To bookmark (' + self.bookmark + ')')
-        if self.window.active_view().file_name() is not None:
+        if self.window.active_view() is not None and self.window.active_view().file_name() is not None:
             self.dir_files.insert(2, bullet + ' To current view')
         self.window.show_quick_panel(self.dir_files, self.handle_navigator_option, sublime.MONOSPACE_FONT)
 
