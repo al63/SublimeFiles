@@ -8,12 +8,11 @@ from subprocess import Popen
 
 bullet = u'\u2022'
 class SublimeFilesCommand(sublime_plugin.WindowCommand):
-    global bullet
     def run(self, command):
         try:
             self.home
         except:
-            #first time starting up. setup work here. Hilariously hacky.
+            # first time starting up. ugly, but works
             settings = sublime.load_settings('SublimeFiles.sublime-settings')
             if os.name == 'nt':
                 self.home = 'USERPROFILE'
@@ -25,15 +24,16 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 os.chdir(os.getenv(self.home))
             self.bookmark = None
             self.term_command = settings.get('term_command')
-            self.drives = [] # windows
+            self.drives = [] # for windows machines
+
         if command == 'navigate':
             self.open_navigator()
 
-    #function for showing panel for changing directories / opening files
+    # function for showing panel for changing directories / opening files
     def open_navigator(self):
         self.dir_files = ['[' + os.getcwdu() + ']', bullet + ' Directory actions', '..' + os.sep, '~' + os.sep]
 
-        #ugly hack to deal with windows
+        # annoying way to deal with windows
         if sublime.platform() == 'windows':
             if len(self.drives) == 0:
                 for i in range(ord('A'), ord('Z') + 1):
@@ -49,19 +49,19 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             else:
                 self.dir_files.append(element)
         self.dir_files = self.dir_files[:4] + sorted(self.dir_files[4:], key=sort_files)
-        if self.bookmark is not None:
+        if self.bookmark:
             self.dir_files.insert(2, bullet + ' To bookmark (' + self.bookmark + ')')
-        if self.window.active_view() is not None and self.window.active_view().file_name() is not None:
+        if self.window.active_view() and self.window.active_view().file_name():
             self.dir_files.insert(2, bullet + ' To current view')
         self.window.show_quick_panel(self.dir_files, self.handle_navigator_option, sublime.MONOSPACE_FONT)
 
-    #handles user's selection in open_navigator. Either cd's into new directory, or opens file
+    # handles user's selection in open_navigator. cd's into new directory, opens cur dir options, or opens file
     def handle_navigator_option(self, call_value):
         if call_value != -1:
             option = self.dir_files[call_value];
             if call_value == 0:
                 self.open_navigator()
-            elif call_value == 1: #Directory Actions
+            elif call_value == 1:
                 self.open_directory_options()
             elif option == '~' + os.sep:
                 os.chdir(os.getenv(self.home))
@@ -75,23 +75,23 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 os.chdir(self.bookmark)
             else: 
                 fullpath = os.path.join(os.getcwdu(), self.dir_files[call_value])
-                if os.path.isdir(fullpath): #navigate to directory
+                if os.path.isdir(fullpath): # navigate to directory
                     os.chdir(self.dir_files[call_value])
-                else: #open file
+                else: # open file
                     self.window.open_file(os.path.join(os.getcwdu(), fullpath))
                     return
             self.open_navigator()
 
-    #Options for when a user selects '.'
+    # options for when a user selects current directory
     def open_directory_options(self): 
-        self.directory_options = [bullet + ' Add folder to project', bullet + ' Create new file', bullet + ' Create new directory',
-                                  bullet + ' Set bookmark here', bullet + ' Back']
-        #Terminal opening. only for posix at the moment
-        if os.name == 'posix' and self.term_command is not None:
+        self.directory_options = [bullet + ' Add folder to project', bullet + ' Create new file',
+            bullet + ' Create new directory', bullet + ' Set bookmark here', bullet + ' Back']
+        # terminal opening. only for osx/linux right now
+        if os.name == 'posix' and self.term_command:
             self.directory_options.insert(0, bullet + ' Open terminal here')
         self.window.show_quick_panel(self.directory_options, self.handle_directory_option, sublime.MONOSPACE_FONT)
 
-    #Handle choice for when user selects '.'
+    # handle choice for when user selects option from currents directory
     def handle_directory_option(self, call_value):
         if call_value != -1:
             selection = self.directory_options[call_value]
@@ -114,7 +114,6 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             elif selection == bullet + ' Create new directory':
                 self.window.show_input_panel('Directory name: ', '', self.handle_new_directory, None, None)
 
-    #Handle creating new file
     def handle_new_file(self, file_name):
         if os.path.isfile(os.getcwdu() + os.sep + file_name):
             sublime.error_message(file_name + " already exists")
@@ -126,7 +125,6 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
         FILE.close()
         self.window.open_file(os.getcwdu() + os.sep + file_name)
 
-    #Handle creating new directory
     def handle_new_directory(self, dir_name):
         if os.path.isfile(os.getcwdu() + os.sep + dir_name):
             sublime.error_message(dir_name + " is already a file")
@@ -145,7 +143,7 @@ def sort_files(filename):
         total_weight += 1
     return total_weight
 
-#Hack to add folders to sidebar (thank you wbond for your forum post!)
+# hack to add folders to sidebar (stolen from wbond)
 def get_sublime_path():
     if sublime.platform() == 'osx':
         return '/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl'
