@@ -1,8 +1,6 @@
 import sublime, sublime_plugin
 import os, sys, glob
-import subprocess
 import shlex
-import locale
 from subprocess import Popen
 
 
@@ -58,7 +56,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
     # handles user's selection in open_navigator. cd's into new directory, opens cur dir options, or opens file
     def handle_navigator_option(self, call_value):
         if call_value != -1:
-            option = self.dir_files[call_value];
+            option = self.dir_files[call_value]
             if call_value == 0:
                 self.open_navigator()
             elif call_value == 1:
@@ -73,7 +71,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 os.chdir(os.path.dirname(self.window.active_view().file_name()))
             elif option.startswith(bullet + ' To bookmark'):
                 os.chdir(self.bookmark)
-            else: 
+            else:
                 fullpath = os.path.join(os.getcwdu(), self.dir_files[call_value])
                 if os.path.isdir(fullpath): # navigate to directory
                     os.chdir(self.dir_files[call_value])
@@ -83,7 +81,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             self.open_navigator()
 
     # options for when a user selects current directory
-    def open_directory_options(self): 
+    def open_directory_options(self):
         self.directory_options = [bullet + ' Add folder to project', bullet + ' Create new file',
             bullet + ' Create new directory', bullet + ' Set bookmark here', bullet + ' Back']
         # terminal opening. only for osx/linux right now
@@ -154,4 +152,4 @@ def get_sublime_path():
 
 def sublime_command_line(args):
     args.insert(0, get_sublime_path())
-    return subprocess.Popen(args)
+    return Popen(args)
