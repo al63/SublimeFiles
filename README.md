@@ -42,6 +42,10 @@ There are a few notable options:
 
 - Selecting "To current View" navigates to the directory of the current file being editted.
 
+----------
+__Ignore file types__
+SublimeFiles by default will ignore \*.pyc files abd \*.class files. You can modify the list of ignored files by changing the ignore\_list in SublimeFiles.sublime-settings.
+
 
 ----------
 

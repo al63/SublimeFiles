@@ -1,6 +1,7 @@
 import sublime, sublime_plugin
 import os, sys, glob
 import shlex
+from fnmatch import fnmatch
 from subprocess import Popen
 
 
@@ -22,6 +23,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 os.chdir(os.getenv(self.home))
             self.bookmark = None
             self.term_command = settings.get('term_command')
+            self.ignore_list = settings.get('ignore_list')
             self.drives = [] # for windows machines
 
         if command == 'navigate':
@@ -41,11 +43,18 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             self.dir_files += self.drives
 
         for element in os.listdir(os.getcwdu()):
-            fullpath = os.path.join(os.getcwdu(), element)
-            if os.path.isdir(fullpath):
-                self.dir_files.append(element + os.sep)
-            else:
-                self.dir_files.append(element)
+            ignore_element = False
+            for ignore_pattern in self.ignore_list:
+                if fnmatch(element, ignore_pattern):
+                    ignore_element = True
+                    break
+            if not ignore_element:
+                fullpath = os.path.join(os.getcwdu(), element)
+                if os.path.isdir(fullpath):
+                    self.dir_files.append(element + os.sep)
+                else:
+                    self.dir_files.append(element)
+
         self.dir_files = self.dir_files[:4] + sorted(self.dir_files[4:], key=sort_files)
         if self.bookmark:
             self.dir_files.insert(2, bullet + ' To bookmark (' + self.bookmark + ')')
