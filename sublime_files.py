@@ -31,7 +31,8 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     # function for showing panel for changing directories / opening files
     def open_navigator(self):
-        self.dir_files = ['[' + os.getcwdu() + ']', bullet + ' Directory actions', '..' + os.sep, '~' + os.sep]
+        self.dir_files = ['[' + os.getcwdu() + ']', bullet + ' Directory actions',
+                bullet + ' Packages Directory', '..' + os.sep, '~' + os.sep]
 
         # annoying way to deal with windows
         if sublime.platform() == 'windows':
@@ -78,6 +79,8 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 os.chdir(option)
             elif option == bullet + ' To current view':
                 os.chdir(os.path.dirname(self.window.active_view().file_name()))
+            elif option == bullet + ' Packages Directory':
+                os.chdir(sublime.packages_path())
             elif option.startswith(bullet + ' To bookmark'):
                 os.chdir(self.bookmark)
             else:
