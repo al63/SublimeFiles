@@ -11,11 +11,11 @@ you would on a command line in order to open up files. New files will open up in
 
 Because Sublime Files actually navigates the file system by changing directories,
 the navigator remembers and starts from last visited directory on subsequent uses.
-To open the navigator, you can either just invoke the command pallette command or
+To open the navigator, you can either just invoke the command palette command or
 use the keybinding ctrl+super+n 
 
 
-Built with Mac OSX, but all the calls have been designed to be platform agnostic and thus should work regardless of system. However, this is untested on Windows.
+Built with Mac OS X, but all the calls have been designed to be platform agnostic and thus should work regardless of system. However, this is untested on Windows.
 
 ----------
 
@@ -28,7 +28,7 @@ Sublime Files can be installed through Sublime Package Control.
 __Usage__
 
 Sublime files an be activated with the command palette command: "Sublime Files: Open Navigator", or with the key command ctrl+super+n (or ctrl+alt+n for windows).
-The first option will always show the current directory. Selecting another directory will nagivate to that directory and selecting a file will open that file.
+The first option will always show the current directory. Selecting another directory will navigate to that directory and selecting a file will open that file.
 
 
 There are a few notable options:
@@ -40,7 +40,7 @@ There are a few notable options:
 
 - Selecting "../" navigates to the parent directory.
 
-- Selecting "To current View" navigates to the directory of the current file being editted.
+- Selecting "To current View" navigates to the directory of the current file being edited.
 
 ----------
 __Ignore file types__
@@ -54,10 +54,10 @@ SublimeFiles by default will ignore \*.pyc files and \*.class files. You can mod
 __Open Terminal__
 
 
-For OSX/Linux systems, Sublime Files can open up a terminal at the current directory navigated to.
+For OS X/Linux systems, Sublime Files can open up a terminal at the current directory navigated to.
 In order for this feature to work properly, you will have to modify the term\_command field in the 
 SublimeFiles.sublime-settings text file
-located in the SublimeFiles plugin directory. As a default, it is set to open up Terminal.app for OSX systems. 
+located in the SublimeFiles plugin directory. As a default, it is set to open up Terminal.app for OS X systems. 
 
 For example, Gnome Terminal and iTerm2 users respectively will want to change term\_command in SublimeFiles.sublime-settings to: 
 
