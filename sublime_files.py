@@ -102,7 +102,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             self.directory_options.insert(0, bullet + ' Open terminal here')
         self.window.show_quick_panel(self.directory_options, self.handle_directory_option, sublime.MONOSPACE_FONT)
 
-    # handle choice for when user selects option from currents directory
+    # handle choice for when user selects option from current directory
     def handle_directory_option(self, call_value):
         if call_value != -1:
             selection = self.directory_options[call_value]
