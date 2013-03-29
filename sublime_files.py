@@ -93,7 +93,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
     # options for when a user selects current directory
     def open_directory_options(self):
         self.directory_options = [bullet + ' Add folder to project', bullet + ' Create new file',
-            bullet + ' Create new directory', bullet + ' Set bookmark here', bullet + ' Back']
+            bullet + ' Create new directory', bullet + ' Set bookmark here', bullet + ' Navigate to specific directory', bullet + ' Back']
         # terminal opening. only for osx/linux right now
         if os.name == 'posix' and self.term_command:
             self.directory_options.insert(0, bullet + ' Open terminal here')
@@ -121,6 +121,9 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 sublime_command_line(['-a', os.getcwdu()])
             elif selection == bullet + ' Create new directory':
                 self.window.show_input_panel('Directory name: ', '', self.handle_new_directory, None, None)
+            elif selection == bullet + ' Navigate to specific directory':
+                self.window.show_input_panel("Navigate to: ", os.getcwdu(), self.handle_cwd, None, None);
+
 
     def handle_new_file(self, file_name):
         if os.path.isfile(os.getcwdu() + os.sep + file_name):
@@ -141,6 +144,14 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             sublime.error_message(dir_name + ' already exists')
             return
         os.makedirs(os.getcwdu() + os.sep + dir_name)
+
+    def handle_cwd(self, new_dir):
+        try:
+            if new_dir[0] == "~":
+                new_dir = os.getenv(self.home) + new_dir[1:]
+            os.chdir(new_dir)
+        except:
+            sublime.error_message(new_dir + " does not exist")
 
 
 def sort_files(filename):
