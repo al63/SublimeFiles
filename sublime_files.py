@@ -5,7 +5,7 @@ from fnmatch import fnmatch
 from subprocess import Popen
 
 
-bullet = u'\u2022'
+bullet = '\u2022'
 class SublimeFilesCommand(sublime_plugin.WindowCommand):
     def run(self, command):
         try:
@@ -31,7 +31,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     # function for showing panel for changing directories / opening files
     def open_navigator(self):
-        self.dir_files = ['[' + os.getcwdu() + ']',
+        self.dir_files = ['[' + os.getcwd() + ']',
             bullet + ' Directory actions', '..' + os.sep, '~' + os.sep]
 
         # annoying way to deal with windows
@@ -43,14 +43,14 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                         self.drives.append(drive + ':\\')
             self.dir_files += self.drives
 
-        for element in os.listdir(os.getcwdu()):
+        for element in os.listdir(os.getcwd()):
             ignore_element = False
             for ignore_pattern in self.ignore_list:
                 if fnmatch(element, ignore_pattern):
                     ignore_element = True
                     break
             if not ignore_element:
-                fullpath = os.path.join(os.getcwdu(), element)
+                fullpath = os.path.join(os.getcwd(), element)
                 if os.path.isdir(fullpath):
                     self.dir_files.append(element + os.sep)
                 else:
@@ -82,11 +82,11 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             elif option.startswith(bullet + ' To bookmark'):
                 os.chdir(self.bookmark)
             else:
-                fullpath = os.path.join(os.getcwdu(), self.dir_files[call_value])
+                fullpath = os.path.join(os.getcwd(), self.dir_files[call_value])
                 if os.path.isdir(fullpath): # navigate to directory
                     os.chdir(self.dir_files[call_value])
                 else: # open file
-                    self.window.open_file(os.path.join(os.getcwdu(), fullpath))
+                    self.window.open_file(os.path.join(os.getcwd(), fullpath))
                     return
             self.open_navigator()
 
@@ -108,42 +108,42 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             elif selection == bullet + ' Back':
                 self.open_navigator()
             elif selection == bullet + ' Set bookmark here':
-                self.bookmark = os.getcwdu()
+                self.bookmark = os.getcwd()
                 self.open_navigator()
             elif selection == bullet + ' Open terminal here':
                 command = shlex.split(str(self.term_command))
-                command.append(os.getcwdu())
+                command.append(os.getcwd())
                 try:
                     Popen(command)
                 except:
                     sublime.error_message('Unable to open terminal')
             elif selection == bullet + ' Add folder to project':
-                sublime_command_line(['-a', os.getcwdu()])
+                sublime_command_line(['-a', os.getcwd()])
             elif selection == bullet + ' Create new directory':
                 self.window.show_input_panel('Directory name: ', '', self.handle_new_directory, None, None)
             elif selection == bullet + ' Navigate to specific directory':
-                self.window.show_input_panel("Navigate to: ", os.getcwdu(), self.handle_cwd, None, None);
+                self.window.show_input_panel("Navigate to: ", os.getcwd(), self.handle_cwd, None, None);
 
 
     def handle_new_file(self, file_name):
-        if os.path.isfile(os.getcwdu() + os.sep + file_name):
+        if os.path.isfile(os.getcwd() + os.sep + file_name):
             sublime.error_message(file_name + ' already exists')
             return
-        if os.path.isdir(os.getcwdu() + os.sep + file_name):
+        if os.path.isdir(os.getcwd() + os.sep + file_name):
             sublime.error_message(file_name + ' is already a directory')
             return
-        FILE = open(os.getcwdu() + os.sep + file_name, 'a')
+        FILE = open(os.getcwd() + os.sep + file_name, 'a')
         FILE.close()
-        self.window.open_file(os.getcwdu() + os.sep + file_name)
+        self.window.open_file(os.getcwd() + os.sep + file_name)
 
     def handle_new_directory(self, dir_name):
-        if os.path.isfile(os.getcwdu() + os.sep + dir_name):
+        if os.path.isfile(os.getcwd() + os.sep + dir_name):
             sublime.error_message(dir_name + ' is already a file')
             return
-        if os.path.isdir(os.getcwdu() + os.sep + dir_name):
+        if os.path.isdir(os.getcwd() + os.sep + dir_name):
             sublime.error_message(dir_name + ' already exists')
             return
-        os.makedirs(os.getcwdu() + os.sep + dir_name)
+        os.makedirs(os.getcwd() + os.sep + dir_name)
 
     def handle_cwd(self, new_dir):
         try:
