@@ -11,6 +11,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
         try:
             self.home
         except:
+            self.current_dir = ""
             # first time starting up. ugly, but works
             settings = sublime.load_settings('SublimeFiles.sublime-settings')
             if os.name == 'nt':
@@ -18,9 +19,11 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             else:
                 self.home = 'HOME'
             try:
-                os.chdir(os.path.dirname(sublime.active_window().active_view().file_name()))
+                self.current_dir = os.path.dirname(sublime.active_window().active_view().file_name())
+                os.chdir(self.current_dir)
             except:
-                os.chdir(os.getenv(self.home))
+                self.current_dir = os.getenv(self.home)
+                os.chdir(self.current_dir)
             self.bookmark = None
             self.term_command = settings.get('term_command')
             self.ignore_list = settings.get('ignore_list')
@@ -31,6 +34,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     # function for showing panel for changing directories / opening files
     def open_navigator(self):
+        self.current_dir = os.getcwdu()
         self.dir_files = ['[' + os.getcwdu() + ']',
             bullet + ' Directory actions', '..' + os.sep, '~' + os.sep]
 
@@ -65,6 +69,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     # handles user's selection from open_navigator
     def handle_navigator_option(self, call_value):
+        os.chdir(self.current_dir)
         if call_value != -1:
             option = self.dir_files[call_value]
             if call_value == 0:
