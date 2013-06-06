@@ -45,7 +45,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
         for element in os.listdir(os.getcwd()):
             ignore_element = False
-            if sel.ignore_list:
+            if self.ignore_list:
                 for ignore_pattern in self.ignore_list:
                     if fnmatch(element, ignore_pattern):
                         ignore_element = True
