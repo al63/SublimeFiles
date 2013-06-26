@@ -24,6 +24,8 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             except:
                 self.current_dir = os.getenv(self.home)
                 os.chdir(self.current_dir)
+
+            self.project_root = None
             self.bookmark = None
             self.term_command = settings.get('term_command')
             self.ignore_list = settings.get('ignore_list')
@@ -34,6 +36,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     # function for showing panel for changing directories / opening files
     def open_navigator(self):
+        self.check_project_root()
         self.current_dir = os.getcwdu()
         self.dir_files = ['[' + os.getcwdu() + ']',
             bullet + ' Directory actions', '..' + os.sep, '~' + os.sep]
@@ -61,11 +64,25 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                     self.dir_files.append(element)
 
         self.dir_files = self.dir_files[:4] + sorted(self.dir_files[4:], key=sort_files)
+
         if self.bookmark:
             self.dir_files.insert(2, bullet + ' To bookmark (' + self.bookmark + ')')
         if self.window.active_view() and self.window.active_view().file_name():
             self.dir_files.insert(2, bullet + ' To current view')
+
         self.window.show_quick_panel(self.dir_files, self.handle_navigator_option, sublime.MONOSPACE_FONT)
+
+    # checks if the user has opened up a folder, and if so automatically navigate to the root
+    def check_project_root(self):
+        folders = self.window.folders()
+        if len(folders) > 0:
+            # If not one yet present or if has changed
+            if not self.project_root or self.project_root != folders[0]:
+                self.project_root = folders[0]
+                os.chdir(self.project_root)
+        elif self.project_root:
+            # if folders is empty now and we had a root, let's clear it out
+            self.project_root = None
 
     # handles user's selection from open_navigator
     def handle_navigator_option(self, call_value):
