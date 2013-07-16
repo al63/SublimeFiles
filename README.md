@@ -69,4 +69,4 @@ For example, Gnome Terminal and iTerm2 users respectively will want to change te
 
 __Sublime Text 3__
 
-Sublime Text 3 isn not officially supported by Sublime Files at the moment. However, there is an experimental branch "py3" that has a python3 version of Sublime Files that should work with Sublime Text 3.
+Sublime Text 3 is not officially supported by Sublime Files at the moment. However, there is an experimental branch "py3" that has a python3 version of Sublime Files that should work with Sublime Text 3.
