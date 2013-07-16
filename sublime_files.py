@@ -61,7 +61,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
             self.dir_files.insert(2, bullet + ' To bookmark (' + self.bookmark + ')')
         if self.window.active_view() and self.window.active_view().file_name():
             self.dir_files.insert(2, bullet + ' To current view')
-        self.window.show_quick_panel(self.dir_files, self.handle_navigator_option, sublime.MONOSPACE_FONT)
+        sublime.set_timeout(lambda: self.window.show_quick_panel(self.dir_files, self.handle_navigator_option, sublime.MONOSPACE_FONT), 10)
 
     # handles user's selection from open_navigator
     def handle_navigator_option(self, call_value):
