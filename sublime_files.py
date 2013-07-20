@@ -98,7 +98,7 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
         # terminal opening. only for osx/linux right now
         if os.name == 'posix' and self.term_command:
             self.directory_options.insert(0, bullet + ' Open terminal here')
-        self.window.show_quick_panel(self.directory_options, self.handle_directory_option, sublime.MONOSPACE_FONT)
+        sublime.set_timeout(lambda: self.window.show_quick_panel(self.directory_options, self.handle_directory_option, sublime.MONOSPACE_FONT), 10)
 
     # handle choice for when user selects option from current directory
     def handle_directory_option(self, call_value):
