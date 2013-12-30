@@ -12,12 +12,12 @@
                 "children":
                 [
                     {
-                        "caption": "SublimeFiles",
+                        "caption": "Sublime Files",
                         "children":
                         [
                             {
                                 "command": "open_file",
-                                "args": {"file": "${packages}/Sublime Files/SublimeFiles.sublime-settings"},
+                                "args": {"file": "${packages}/SublimeFiles/SublimeFiles.sublime-settings"},
                                 "caption": "Settings – Default"
                             },
                             {
@@ -28,7 +28,7 @@
                             {
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/Sublime Files/Default (Windows).sublime-keymap",
+                                    "file": "${packages}/SublimeFiles/Default (Windows).sublime-keymap",
                                     "platform": "Windows"
                                 },
                                 "caption": "Key Bindings – Default"
@@ -36,7 +36,7 @@
                             {
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/Sublime Files/Default (OSX).sublime-keymap",
+                                    "file": "${packages}/SublimeFiles/Default (OSX).sublime-keymap",
                                     "platform": "OSX"
                                 },
                                 "caption": "Key Bindings – Default"
@@ -44,7 +44,7 @@
                             {
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/Sublime Files/Default (Linux).sublime-keymap",
+                                    "file": "${packages}/SublimeFiles/Default (Linux).sublime-keymap",
                                     "platform": "Linux"
                                 },
                                 "caption": "Key Bindings – Default"
