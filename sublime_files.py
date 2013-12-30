@@ -212,7 +212,10 @@ def get_sublime_path():
     elif sublime.platform() == 'linux':
         return open('/proc/self/cmdline').read().split(chr(0))[0]
     else:
-        return sys.executable
+        if running_in_st3():
+            return os.path.join(sys.path[0], 'sublime_text.exe')
+        else:
+            return sys.executable
 
 
 def sublime_command_line(args):

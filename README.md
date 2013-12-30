@@ -11,8 +11,6 @@ Because Sublime Files actually navigates the file system by changing directories
 -  OSX: `ctrl + cmd + n` 
 -  Windows/Linux: `ctrl + alt + n`
 
-Built with Mac OS X, but all the calls have been designed to be platform agnostic and thus should work regardless of system. However, this is untested on Windows.
-
 Installation
 ------------
 
