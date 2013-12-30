@@ -1,10 +1,10 @@
 {
-    //The command to execute to open a terminal.
-    //Program will append the directory to open to the end of term_command.
+    // The command to execute to open a terminal. 
+    // Program will append the directory to open to the end of term_command.
     "term_command": "open -a Terminal ",
 
-    //list of Unix shell-style wildcard matches for file types to
-    //ignore when listing files in the navigator.
-    //By default, ignores *.pyc and *.class files.
+    // List of Unix shell-style wildcard matches for file types to
+    // ignore when listing files in the navigator.
+    // By default, ignores *.pyc and *.class files.
     "ignore_list": ["*.pyc", "*.class"]
 }
