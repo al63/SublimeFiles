@@ -1,7 +1,7 @@
 [
     {
-        "keys": ["ctrl+super+n"],
+        "keys": ["ctrl+alt+n"],
         "command": "sublime_files",
-        "args": {"command":"navigate"}
+        "args": {"command": "navigate"}
     }
 ]
