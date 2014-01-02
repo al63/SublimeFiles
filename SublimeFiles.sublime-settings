@@ -6,5 +6,9 @@
     // List of Unix shell-style wildcard matches for file types to
     // ignore when listing files in the navigator.
     // By default, ignores *.pyc and *.class files.
-    "ignore_list": ["*.pyc", "*.class"]
+    "ignore_list": ["*.pyc", "*.class"],
+
+    // If provided, will always start navigation from given directory.
+    // Use "~" to point to home directory, null to disable.
+    "start_directory": "null"
 }

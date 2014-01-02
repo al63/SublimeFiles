@@ -31,9 +31,11 @@ There are a few notable options:
 Configuration 
 -------------
 
+Default configuration is stored in `SublimeFiles.sublime-settings` accessible from _Preferences->Package Settings->Sublime Files->Settings - Default_. When changing any of the settings below it's suggested to use the user settings: _Preferences->Package Settings->Sublime Files->Settings - User_ as the file will remain untouched when updating plugin.
+
 __Ignore file types__
 
-SublimeFiles by default will ignore `*.pyc` files and `*.class` files. You can modify the list of ignored files by changing the `ignore_list` in `SublimeFiles.sublime-settings` (Preferences->Package Settings->Sublime Files->Settings - Default). For example:
+Sublime Files by default will ignore `*.pyc` files and `*.class` files. You can modify the list of ignored files by changing the `ignore_list`. For example:
 
 	{
 	    "ignore_list": ["*.pyc", "*.class", "*.o"]
@@ -41,9 +43,9 @@ SublimeFiles by default will ignore `*.pyc` files and `*.class` files. You can m
 
 __Open Terminal__
 
-For OS X/Linux systems, Sublime Files can open up a terminal at the current directory navigated to. In order for this feature to work properly, you will have to modify the `term_command` field in the `SublimeFiles.sublime-settings` file (Preferences->Package Settings->Sublime Files->Settings - Default). As a default, it is set to open up Terminal.app for OS X systems. 
+For OS X/Linux systems, Sublime Files can open up a terminal at the current directory navigated to. In order for this feature to work properly, you will have to modify the `term_command`. As a default, it is set to open up Terminal.app for OS X systems. 
 
-For example, Gnome Terminal and iTerm2 users respectively will want to change term\_command in `SublimeFiles.sublime-settings` to: 
+For example, Gnome Terminal and iTerm2 users respectively will want to change `term_command` to: 
 
 	{
 	    "term_command": "gnome-terminal --working-directory="
@@ -54,3 +56,13 @@ and
 	{
 	    "term_command" : "open -a iTerm\ 2 "
 	}
+
+__Start directory__
+
+If you _always_ want to start navigation from a given directory for example `~` just update the `start_directory` setting:
+
+	{
+	    "start_directory": "~"
+	}
+
+Default configuration comes with this setting turned off (set to `null`).

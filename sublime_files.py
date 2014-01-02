@@ -32,25 +32,28 @@ class SublimeFilesCommand(sublime_plugin.WindowCommand):
                 self.home = 'USERPROFILE'
             else:
                 self.home = 'HOME'
-            try:
-                self.current_dir = os.path.dirname(sublime.active_window().active_view().file_name())
-                os.chdir(self.current_dir)
-            except:
-                self.current_dir = os.getenv(self.home)
-                os.chdir(self.current_dir)
-
             self.project_root = None
             self.bookmark = None
             self.term_command = settings.get('term_command')
             self.ignore_list = settings.get('ignore_list')
+            self.start_directory = settings.get('start_directory')
+            if self.start_directory is not None:
+                self.start_directory = os.path.abspath(os.path.expanduser(self.start_directory))
+                if not os.path.exists(self.start_directory):
+                    print ('SublimeFiles: "start_directory" points to invalid path, ignoring.')
+                    self.start_directory = None
             self.drives = []  # for windows machines
 
         if command == 'navigate':
+            if self.start_directory is not None:
+                os.chdir(self.start_directory)
+
             self.open_navigator()
 
     # function for showing panel for changing directories / opening files
     def open_navigator(self):
-        self.check_project_root()
+        if self.start_directory is None:
+            self.check_project_root()
         self.current_dir = self.getcwd()
         self.dir_files = ['[' + self.getcwd() + ']',
             bullet + ' Directory actions', '..' + os.sep, '~' + os.sep]
