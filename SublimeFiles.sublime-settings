@@ -10,5 +10,5 @@
 
     // If provided, will always start navigation from given directory.
     // Use "~" to point to home directory, null to disable.
-    "start_directory": "null"
+    "start_directory": null
 }
