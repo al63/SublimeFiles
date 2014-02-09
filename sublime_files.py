@@ -13,10 +13,14 @@ bullet = u'\u2022'
 class SublimeFilesCommand(sublime_plugin.WindowCommand):
 
     def getcwd(self):
-        if running_in_st3():
-            return os.getcwd()
-        else:
-            return os.getcwdu()
+        try:
+            if running_in_st3():
+                return os.getcwd()
+            else:
+                return os.getcwdu()
+        except OSError:
+            os.chdir(os.getenv(self.home))
+            return self.getcwd()
 
     def show_quick_panel(self, elements, on_selection, params):
         sublime.set_timeout(lambda: self.window.show_quick_panel(elements, on_selection, params), 10)
