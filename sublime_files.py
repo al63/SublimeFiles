@@ -217,7 +217,10 @@ def get_sublime_path():
         else:
             return '/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl'
     elif sublime.platform() == 'linux':
-        return open('/proc/self/cmdline').read().split(chr(0))[0]
+        if running_in_st3():
+            return open('/proc/' + str(os.getppid()) + '/cmdline').read().split(chr(0))[0]
+        else:
+            return open('/proc/self/cmdline').read().split(chr(0))[0]
     else:
         if running_in_st3():
             return os.path.join(sys.path[0], 'sublime_text.exe')
